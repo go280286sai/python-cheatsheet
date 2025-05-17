@@ -37,7 +37,7 @@ object — экземпляры классов.
 Main
 ----
 ```python
-if __name__ == '__main__':      # Skips next line if file was imported.
+if __name__ == '__main__':      # Пропускает следующую строку, если файл был импортирован.
     main()                      # Runs `def main(): ...` function.
 ```
 
@@ -45,29 +45,29 @@ if __name__ == '__main__':      # Skips next line if file was imported.
 List
 ----
 ```python
-<list> = [<el_1>, <el_2>, ...]  # Creates a list object. Also list(<collection>).
+<list> = [<el_1>, <el_2>, ...]  # Создает объект списка. Также list(<collection>).
 ```
 
 ```python
-<el>   = <list>[index]          # First index is 0. Last -1. Allows assignments.
-<list> = <list>[<slice>]        # Also <list>[from_inclusive : to_exclusive : ±step].
+<el>   = <list>[index]          # Первый индекс - 0. Последний - 1. Разрешает присваивания.
+<list> = <list>[<slice>]        # Также <list>[from_inclusive : to_exclusive : ±step].
 ```
 
 ```python
-<list>.append(<el>)             # Appends element to the end. Also <list> += [<el>].
-<list>.extend(<collection>)     # Appends elements to the end. Also <list> += <coll>.
+<list>.append(<el>)             # Добавляет элемент в конец. Также <list> += [<el>].
+<list>.extend(<collection>)     # Добавляет элементы в конец. Также <list> += <coll>.
 ```
 
 ```python
-<list>.sort()                   # Sorts elements in ascending order.
-<list>.reverse()                # Reverses the list in-place.
-<list> = sorted(<collection>)   # Returns new list with sorted elements.
-<iter> = reversed(<list>)       # Returns reversed iterator of elements.
+<list>.sort()                   # Сортирует элементы в порядке возрастания.
+<list>.reverse()                # Переворачивает список на месте.
+<list> = sorted(<collection>)   # Возвращает новый список с отсортированными элементами.
+<iter> = reversed(<list>)       # Возвращает обратный итератор элементов.
 ```
 
 ```python
-<el>  = max(<collection>)       # Returns largest element. Also min(<el_1>, ...).
-<num> = sum(<collection>)       # Returns sum of elements. Also math.prod(<coll>).
+<el>  = max(<collection>)       # Возвращает наибольший элемент. Также min(<el_1>, ...).
+<num> = sum(<collection>)       # Возвращает сумму элементов. Также math.prod(<coll>).
 ```
 
 ```python
@@ -76,51 +76,47 @@ sorted_by_second = sorted(<collection>, key=lambda el: el[1])
 sorted_by_both   = sorted(<collection>, key=lambda el: (el[1], el[0]))
 flatter_list     = list(itertools.chain.from_iterable(<list>))
 ```
-* **For details about sort(), sorted(), min() and max() see [Sortable](#sortable).**
-* **Module [operator](#operator) has function itemgetter() that can replace listed [lambdas](#lambda).**
-* **This text uses the term collection instead of iterable. For rationale see [Collection](#collection).**
 
 ```python
-<int> = len(<list>)             # Returns number of items. Also works on dict, set and string.
-<int> = <list>.count(<el>)      # Returns number of occurrences. Also `if <el> in <coll>: ...`.
-<int> = <list>.index(<el>)      # Returns index of the first occurrence or raises ValueError.
-<el>  = <list>.pop()            # Removes and returns item from the end or at index if passed.
-<list>.insert(<int>, <el>)      # Inserts item at index and moves the rest to the right.
-<list>.remove(<el>)             # Removes first occurrence of the item or raises ValueError.
-<list>.clear()                  # Removes all items. Also works on dictionary and set.
+<int> = len(<list>)             # Возвращает количество элементов. Также работает с dict, set и string.
+<int> = <list>.count(<el>)      # Возвращает количество вхождений. Также `if <el> in <coll>: ...`.
+<int> = <list>.index(<el>)      # Возвращает индекс первого вхождения или вызывает ValueError.
+<el>  = <list>.pop()            # Удаляет и возвращает элемент с конца или по индексу, если он передан.
+<list>.insert(<int>, <el>)      # Вставляет элемент по индексу и перемещает остальные вправо.
+<list>.remove(<el>)             # Удаляет первое вхождение элемента или вызывает исключение ValueError.
+<list>.clear()                  # Удаляет все элементы. Также работает со словарем и множеством.
 ```
-
 
 Dictionary
 ----------
 ```python
-<dict> = {key_1: val_1, key_2: val_2, ...}      # Use `<dict>[key]` to get or set the value.
+<dict> = {key_1: val_1, key_2: val_2, ...}      # Используйте `<dict>[key]` для получения или установки значения.
 ```
 
 ```python
-<view> = <dict>.keys()                          # Collection of keys that reflects changes.
-<view> = <dict>.values()                        # Collection of values that reflects changes.
-<view> = <dict>.items()                         # Coll. of key-value tuples that reflects chgs.
+<view> = <dict>.keys()                          # Сборник ключей, отражающих изменения.
+<view> = <dict>.values()                        # Набор значений, отражающих изменения.
+<view> = <dict>.items()                         # Колл. кортежей «ключ-значение», отражающих изменения.
 ```
 
 ```python
-value  = <dict>.get(key, default=None)          # Returns default if key is missing.
-value  = <dict>.setdefault(key, default=None)   # Returns and writes default if key is missing.
-<dict> = collections.defaultdict(<type>)        # Returns a dict with default value `<type>()`.
-<dict> = collections.defaultdict(lambda: 1)     # Returns a dict with default value 1.
+value  = <dict>.get(key, default=None)          # Возвращает значение по умолчанию, если ключ отсутствует.
+value  = <dict>.setdefault(key, default=None)   # Возвращает и записывает значение по умолчанию, если ключ отсутствует.
+<dict> = collections.defaultdict(<type>)        # Возвращает словарь со значением по умолчанию `<type>()`.
+<dict> = collections.defaultdict(lambda: 1)     # Возвращает словарь со значением по умолчанию 1.
 ```
 
 ```python
-<dict> = dict(<collection>)                     # Creates a dict from coll. of key-value pairs.
-<dict> = dict(zip(keys, values))                # Creates a dict from two collections.
-<dict> = dict.fromkeys(keys [, value])          # Creates a dict from collection of keys.
+<dict> = dict(<collection>)                     # Создает словарь из набора пар ключ-значение.
+<dict> = dict(zip(keys, values))                # Создает словарь из двух коллекций.
+<dict> = dict.fromkeys(keys [, value])          # Создает словарь из набора ключей.
 ```
 
 ```python
-<dict>.update(<dict>)                           # Adds items. Replaces ones with matching keys.
-value = <dict>.pop(key)                         # Removes item or raises KeyError if missing.
-{k for k, v in <dict>.items() if v == value}    # Returns set of keys that point to the value.
-{k: v for k, v in <dict>.items() if k in keys}  # Filters the dictionary by keys.
+<dict>.update(<dict>)                           # Добавляет элементы. Заменяет их соответствующими ключами.
+value = <dict>.pop(key)                         # Удаляет элемент или вызывает KeyError, если он отсутствует.
+{k for k, v in <dict>.items() if v == value}    # Возвращает набор ключей, указывающих на значение.
+{k: v for k, v in <dict>.items() if k in keys}  # Фильтрует словарь по ключам.
 ```
 
 ### Counter
@@ -136,7 +132,7 @@ value = <dict>.pop(key)                         # Removes item or raises KeyErro
 Set
 ---
 ```python
-<set> = {<el_1>, <el_2>, ...}                   # Use `set()` for empty set.
+<set> = {<el_1>, <el_2>, ...}                   # Используйте `set()` для пустого набора.
 ```
 
 ```python
@@ -154,14 +150,13 @@ Set
 ```
 
 ```python
-<el> = <set>.pop()                              # Raises KeyError if empty.
-<set>.remove(<el>)                              # Raises KeyError if missing.
-<set>.discard(<el>)                             # Doesn't raise an error.
+<el> = <set>.pop()                              # Вызывает KeyError, если пусто.
+<set>.remove(<el>)                              # При отсутствии выдает KeyError.
+<set>.discard(<el>)                             # Ошибки не возникает.
 ```
 
 ### Frozen Set
-* **Is immutable and hashable.**
-* **That means it can be used as a key in a dictionary or as an element in a set.**
+
 ```python
 <frozenset> = frozenset(<collection>)
 ```
@@ -169,7 +164,6 @@ Set
 
 Tuple
 -----
-**Tuple is an immutable and hashable list.**
 ```python
 <tuple> = ()                               # Empty tuple.
 <tuple> = (<el>,)                          # Or: <el>,
@@ -177,7 +171,9 @@ Tuple
 ```
 
 ### Named Tuple
-**Tuple's subclass with named elements.**
+Позволяет обращаться к элементам по имени, а не только по индексу.
+Экономит память, так как работает, как обычный tuple.
+Упрощает работу с данными, которые имеют фиксированную структуру.
 ```python
 >>> from collections import namedtuple
 >>> Point = namedtuple('Point', 'x y')
@@ -191,7 +187,6 @@ Point(x=1, y=2)
 
 Range
 -----
-**Immutable and hashable sequence of integers.**
 ```python
 <range> = range(stop)                      # I.e. range(to_exclusive).
 <range> = range(start, stop)               # I.e. range(from_inclusive, to_exclusive).
@@ -214,13 +209,12 @@ for i, el in enumerate(<coll>, start=0):   # Returns next element and its index 
 
 Iterator
 --------
-**Potentially endless stream of elements.**
 
 ```python
-<iter> = iter(<collection>)                # `iter(<iter>)` returns unmodified iterator.
-<iter> = iter(<function>, to_exclusive)    # A sequence of return values until 'to_exclusive'.
-<el>   = next(<iter> [, default])          # Raises StopIteration or returns 'default' on end.
-<list> = list(<iter>)                      # Returns a list of iterator's remaining elements.
+<iter> = iter(<collection>)                # `iter(<iter>)` возвращает немодифицированный итератор.
+<iter> = iter(<function>, to_exclusive)    # Последовательность возвращаемых значений до «to_exclusive».
+<el>   = next(<iter> [, default])          # Вызывает StopIteration или возвращает «default» в конце.
+<list> = list(<iter>)                      # Возвращает список оставшихся элементов итератора.
 ```
 
 ### Itertools
@@ -229,26 +223,24 @@ import itertools as it
 ```
 
 ```python
-<iter> = it.count(start=0, step=1)         # Returns updated value endlessly. Accepts floats.
-<iter> = it.repeat(<el> [, times])         # Returns element endlessly or 'times' times.
-<iter> = it.cycle(<collection>)            # Repeats the sequence endlessly.
+<iter> = it.count(start=0, step=1)         # Возвращает обновленное значение бесконечно. Принимает числа с плавающей точкой.
+<iter> = it.repeat(<el> [, times])         # Возвращает элемент бесконечно или указанное количество раз.
+<iter> = it.cycle(<collection>)            # Повторяет последовательность бесконечно.
 ```
 
 ```python
-<iter> = it.chain(<coll>, <coll> [, ...])  # Empties collections in order (figuratively).
-<iter> = it.chain.from_iterable(<coll>)    # Empties collections inside a collection in order.
+<iter> = it.chain(<coll>, <coll> [, ...])  # Очищает коллекции по порядку (образно).
+<iter> = it.chain.from_iterable(<coll>)    # Очищает коллекции внутри коллекции по порядку.
 ```
 
 ```python
-<iter> = it.islice(<coll>, to_exclusive)   # Only returns first 'to_exclusive' elements.
-<iter> = it.islice(<coll>, from_inc, …)    # `to_exclusive, +step_size`. Indices can be None.
+<iter> = it.islice(<coll>, to_exclusive)   # Возвращает только первые элементы «to_exclusive».
+<iter> = it.islice(<coll>, from_inc, …)    # `to_exclusive, +step_size`. Индексы могут быть None.
 ```
 
 
 Generator
 ---------
-* **Any function that contains a yield statement returns a generator.**
-* **Generators and iterators are interchangeable.**
 
 ```python
 def count(start, step):
@@ -266,10 +258,6 @@ def count(start, step):
 
 Type
 ----
-* **Everything is an object.**
-* **Every object has a type.**
-* **Type and class are synonymous.**
-
 ```python
 <type> = type(<el>)                          # Or: <el>.__class__
 <bool> = isinstance(<el>, <type>)            # Or: issubclass(type(<el>), <type>)
@@ -286,7 +274,7 @@ from types import FunctionType, MethodType, LambdaType, GeneratorType, ModuleTyp
 ```
 
 ### Abstract Base Classes
-**Each abstract base class specifies a set of virtual subclasses. These classes are then recognized by isinstance() and issubclass() as subclasses of the ABC, although they are really not. ABC can also manually decide whether or not a specific class is its virtual subclass, usually based on which methods the class has implemented. For instance, Iterable ABC looks for method iter(), while Collection ABC looks for iter(), contains() and len().**
+**Каждый абстрактный базовый класс определяет набор виртуальных подклассов. Затем эти классы распознаются isinstance() и issubclass() как подклассы ABC, хотя на самом деле они таковыми не являются. ABC также может вручную решить, является ли определенный класс его виртуальным подклассом, обычно на основе того, какие методы реализовал класс. Например, Iterable ABC ищет метод iter(), в то время как Collection ABC ищет iter(), contains() и len().**
 
 ```python
 >>> from collections.abc import Iterable, Collection, Sequence
@@ -325,39 +313,36 @@ True
 
 String
 ------
-**Immutable sequence of characters.**
 
 ```python
-<str>  = <str>.strip()                       # Strips all whitespace characters from both ends.
-<str>  = <str>.strip('<chars>')              # Strips passed characters. Also lstrip/rstrip().
+<str>  = <str>.strip()                       # Удаляет все пробельные символы с обоих концов.
+<str>  = <str>.strip('<chars>')              # Удаляет переданные символы. Также lstrip/rstrip().
 ```
 
 ```python
-<list> = <str>.split()                       # Splits on one or more whitespace characters.
-<list> = <str>.split(sep=None, maxsplit=-1)  # Splits on 'sep' str at most 'maxsplit' times.
-<list> = <str>.splitlines(keepends=False)    # On [\n\r\f\v\x1c-\x1e\x85\u2028\u2029] and \r\n.
-<str>  = <str>.join(<coll_of_strings>)       # Joins elements using string as a separator.
+<list> = <str>.split()                       # Разделяет по одному или нескольким пробельным символам.
+<list> = <str>.split(sep=None, maxsplit=-1)  # Разделение на 'sep' str максимум за 'maxsplit' раз.
+<list> = <str>.splitlines(keepends=False)    # На [\n\r\f\v\x1c-\x1e\x85\u2028\u2029] и \r\n.
+<str>  = <str>.join(<coll_of_strings>)       # Объединяет элементы, используя строку в качестве разделителя.
 ```
 
 ```python
-<bool> = <sub_str> in <str>                  # Checks if string contains the substring.
-<bool> = <str>.startswith(<sub_str>)         # Pass tuple of strings for multiple options.
-<int>  = <str>.find(<sub_str>)               # Returns start index of the first match or -1.
-<int>  = <str>.index(<sub_str>)              # Same, but raises ValueError if there's no match.
+<bool> = <sub_str> in <str>                  # Проверяет, содержит ли строка подстроку.
+<bool> = <str>.startswith(<sub_str>)         # Передайте кортеж строк для нескольких вариантов.
+<int>  = <str>.find(<sub_str>)               # Возвращает начальный индекс первого совпадения или -1.
+<int>  = <str>.index(<sub_str>)              # То же самое, но при отсутствии совпадений выдает ValueError.
 ```
 
 ```python
-<str>  = <str>.lower()                       # Changes the case. Also upper/capitalize/title().
-<str>  = <str>.replace(old, new [, count])   # Replaces 'old' with 'new' at most 'count' times.
-<str>  = <str>.translate(<table>)            # Use `str.maketrans(<dict>)` to generate table.
+<str>  = <str>.lower()                       # Изменяет регистр. Также верхний/заглавный/заголовок().
+<str>  = <str>.replace(old, new [, count])   # Заменяет «старое» на «новое» не более 'count' раз.
+<str>  = <str>.translate(<table>)            # Используйте `str.maketrans(<dict>)` для генерации таблицы.
 ```
 
 ```python
-<str>  = chr(<int>)                          # Converts int to Unicode character.
-<int>  = ord(<str>)                          # Converts Unicode character to int.
+<str>  = chr(<int>)                          # Преобразует целое число в символ Unicode.
+<int>  = ord(<str>)                          # Преобразует символ Unicode в целое число.
 ```
-* **Use `'unicodedata.normalize("NFC", <str>)'` on strings like `'Motörhead'` before comparing them to other strings, because `'ö'` can be stored as one or two characters.**
-* **`'NFC'` converts such characters to a single character, while `'NFD'` converts them to two.**
 
 ### Property Methods
 ```python
@@ -376,46 +361,37 @@ Regex
 
 ```python
 import re
-<str>   = re.sub(r'<regex>', new, text, count=0)  # Substitutes all occurrences with 'new'.
-<list>  = re.findall(r'<regex>', text)            # Returns all occurrences as strings.
-<list>  = re.split(r'<regex>', text, maxsplit=0)  # Add brackets around regex to keep matches.
-<Match> = re.search(r'<regex>', text)             # First occurrence of the pattern or None.
-<Match> = re.match(r'<regex>', text)              # Searches only at the beginning of the text.
-<iter>  = re.finditer(r'<regex>', text)           # Returns all occurrences as Match objects.
+<str> = re.sub(r'<regex>', new, text, count=0)  # Заменяет все вхождения на 'new'.
+<list> = re.findall(r'<regex>', text)           # Возвращает все вхождения как строки.
+<list> = re.split(r'<regex>', text, maxsplit=0) # Добавьте скобки вокруг regex, чтобы сохранить совпадения.
+<Match> = re.search(r'<regex>', text)           # Первое вхождение шаблона или None.
+<Match> = re.match(r'<regex>', text)            # Поиск только в начале текста.
+<iter> = re.finditer(r'<regex>', text)          # Возвращает все вхождения как объекты Match.
 ```
 
-* **Raw string literals do not interpret escape sequences, thus enabling us to use regex-specific escape sequences that cause SyntaxWarning in normal string literals (since 3.12).**
-* **Argument 'new' of re.sub() can be a function that accepts Match object and returns a str.**
-* **Argument `'flags=re.IGNORECASE'` can be used with all functions.**
-* **Argument `'flags=re.MULTILINE'` makes `'^'` and `'$'` match the start/end of each line.**
-* **Argument `'flags=re.DOTALL'` makes `'.'` also accept the `'\n'`.**
-* **`'re.compile(<regex>)'` returns a Pattern object with methods sub(), findall(), etc.**
 
 ### Match Object
 ```python
-<str>   = <Match>.group()                         # Returns the whole match. Also group(0).
-<str>   = <Match>.group(1)                        # Returns part inside the first brackets.
-<tuple> = <Match>.groups()                        # Returns all bracketed parts.
-<int>   = <Match>.start()                         # Returns start index of the match.
-<int>   = <Match>.end()                           # Returns exclusive end index of the match.
+<str> = <Match>.group()                         # Возвращает все совпадение. Также group(0).
+<str> = <Match>.group(1)                        # Возвращает часть внутри первых скобок.
+<tuple> = <Match>.groups()                      # Возвращает все части в скобках.
+<int> = <Match>.start()                         # Возвращает начальный индекс совпадения.
+<int> = <Match>.end()                           # Возвращает эксклюзивный конечный индекс совпадения.
 ```
 
 ### Special Sequences
 ```python
-'\d' == '[0-9]'                                   # Also [०-९…]. Matches a decimal character.
-'\w' == '[a-zA-Z0-9_]'                            # Also [ª²³…]. Matches an alphanumeric or _.
-'\s' == '[ \t\n\r\f\v]'                           # Also [\x1c-\x1f…]. Matches a whitespace.
+'\d' == '[0-9]'                      # Также [०-९…]. Соответствует десятичному символу.
+'\w' == '[a-zA-Z0-9_]'               # Также [ª²³…]. Соответствует буквенно-цифровому символу или _.
+'\s' == '[ \t\n\r\f\v]'              # Также [\x1c-\x1f…]. Соответствует пробелу.
 ```
-* **By default, decimal characters and alphanumerics from all alphabets are matched unless `'flags=re.ASCII'` is used. It restricts special sequence matches to the first 128 Unicode characters and also prevents `'\s'` from accepting `'\x1c'`, `'\x1d'`, `'\x1e'` and `'\x1f'` (non-printable characters that divide text into files, tables, rows and fields, respectively).**
-* **Use a capital letter for negation (all non-ASCII characters will be matched when used in combination with ASCII flag).**
-
 
 Format
 ------
-```perl
-<str> = f'{<el_1>}, {<el_2>}'            # Curly brackets can also contain expressions.
-<str> = '{}, {}'.format(<el_1>, <el_2>)  # Or: '{0}, {a}'.format(<el_1>, a=<el_2>)
-<str> = '%s, %s' % (<el_1>, <el_2>)      # Redundant and inferior C-style formatting.
+```python
+<str> = f'{<el_1>}, {<el_2>}'                 # Фигурные скобки также могут содержать выражения.
+<str> = '{}, {}'.format(<el_1>, <el_2>)       # Или: '{0}, {a}'.format(<el_1>, a=<el_2>)
+<str> = '%s, %s' % (<el_1>, <el_2>)           # Избыточное и неполноценное форматирование в стиле C.
 ```
 
 ### Example
@@ -434,10 +410,6 @@ Format
 {<el>:.<10}                              # '<el>......'
 {<el>:0}                                 # '<el>'
 ```
-* **Objects are rendered using `'format(<el>, "<options>")'`.**
-* **Options can be generated dynamically: `f'{<el>:{<str/int>}[…]}'`.**
-* **Adding `'='` to the expression prepends it to the output: `f'{1+1=}'` returns `'1+1=2'`.**
-* **Adding `'!r'` to the expression converts object to string by calling its [repr()](#class) method.**
 
 ### Strings
 ```python
@@ -494,15 +466,12 @@ Format
 | 56.789       |    '5.7e+01'   |     '56.79'    |   '5.68e+01'   |   '5678.90%'   |
 +--------------+----------------+----------------+----------------+----------------+
 ```
-* **`'{<float>:g}'` is `'{<float>:.6}'` with stripped zeros, exponent starting at `'1e+06'`.**
-* **When both rounding up and rounding down are possible, the one that returns result with even last digit is chosen. That makes `'{6.5:.0f}'` a `'6'` and `'{7.5:.0f}'` an `'8'`.**
-* **This rule only effects numbers that can be represented exactly by a float (`.5`, `.25`, …).**
 
 ### Ints
 ```python
-{90:c}                                   # 'Z'. Unicode character with value 90.
-{90:b}                                   # '1011010'. Binary representation of the int.
-{90:X}                                   # '5A'. Hexadecimal with upper-case letters.
+{90:c}                           # 'Z'. Символ Unicode со значением 90.
+{90:b}                           # '1011010'. Двоичное представление целого числа.
+{90:X}                           # '5A'. Шестнадцатеричное с заглавными буквами.
 ```
 
 
@@ -515,33 +484,28 @@ Numbers
 <Fraction> = fractions.Fraction(0, 1)        # Or: Fraction(numerator=0, denominator=1)
 <Decimal>  = decimal.Decimal(<str/int>)      # Or: Decimal((sign, digits, exponent))
 ```
-* **`'int(<str>)'` and `'float(<str>)'` raise ValueError on malformed strings.**
-* **Decimal numbers are stored exactly, unlike most floats where `'1.1 + 2.2 != 3.3'`.**
-* **Floats can be compared with: `'math.isclose(<float>, <float>)'`.**
-* **Precision of decimal operations is set with: `'decimal.getcontext().prec = <int>'`.**
-* **Bools can be used anywhere ints can, because bool is a subclass of int: `'True + 1 == 2'`.**
 
 ### Built-in Functions
 ```python
-<num> = pow(<num>, <num>)                    # Or: <number> ** <number>
-<num> = abs(<num>)                           # <float> = abs(<complex>)
-<num> = round(<num> [, ±ndigits])            # Also math.floor/ceil(<number>).
-<num> = min(<collection>)                    # Also max(<num>, <num> [, ...]).
-<num> = sum(<collection>)                    # Also math.prod(<collection>).
+<num> = pow(<num>, <num>)                        # Или: <number> ** <number>
+<num> = abs(<num>)                               # <float> = abs(<complex>)
+<num> = round(<num> [, ±ndigits])                # Также math.floor/ceil(<number>).
+<num> = min(<collection>)                        # Также max(<num>, <num> [, ...]).
+<num> = sum(<collection>)                        # Также math.prod(<collection>).
 ```
 
 ### Math
 ```python
-from math import pi, inf, nan, isnan         # `inf*0` and `nan+1` return nan.
-from math import sqrt, factorial             # `sqrt(-1)` raises ValueError.
-from math import sin, cos, tan               # Also: asin, degrees, radians.
-from math import log, log10, log2            # Log accepts base as second arg.
+from math import pi, inf, nan, isnan              # `inf*0` и `nan+1` возвращают nan.
+from math import sqrt, factorial                  # `sqrt(-1)` вызывает ValueError.
+from math import sin, cos, tan                    # Также: asin, градусы, радианы.
+from math import log, log10, log2                 # Log принимает основание в качестве второго аргумента.
 ```
 
 ### Statistics
 ```python
-from statistics import mean, median, mode    # Mode returns the most common value.
-from statistics import variance, stdev       # Also: pvariance, pstdev, quantiles.
+from statistics import mean, median, mode            # Мода возвращает наиболее распространенное значение.
+from statistics import variance, stdev               # Также: pvariance, pstdev, quantiles.
 ```
 
 ### Random
@@ -550,11 +514,11 @@ from random import random, randint, uniform  # Also: gauss, choice, shuffle, see
 ```
 
 ```python
-<float> = random()                           # Returns a float inside [0, 1).
-<num>   = randint/uniform(a, b)              # Returns an int/float inside [a, b].
-<float> = gauss(mean, stdev)                 # Also triangular(low, high, mode).
-<el>    = choice(<sequence>)                 # Keeps it intact. Also sample(pop, k).
-shuffle(<list>)                              # Shuffles the list in place.
+<float> = random()                        # Возвращает float внутри [0, 1).
+<num> = randint/uniform(a, b)             # Возвращает int/float внутри [a, b].
+<float> = gauss(mean, stdev)              # Также треугольный(low, high, mode).
+<el> = choice(<sequence>)                 # Сохраняет его нетронутым. Также sample(pop, k).
+shuffle(<list>)                           # Перемешивает список на месте.
 ```
 
 ### Hexadecimal Numbers
@@ -605,7 +569,6 @@ import itertools as it
 
 Datetime
 --------
-**Provides 'date', 'time', 'datetime' and 'timedelta' classes. All are immutable and hashable.**
 
 ```python
 # $ pip3 install python-dateutil
@@ -614,53 +577,44 @@ import zoneinfo, dateutil.tz
 ```
 
 ```python
-<D>  = date(year, month, day)               # Only accepts valid dates from 1 to 9999 AD.
-<T>  = time(hour=0, minute=0, second=0)     # Also: `microsecond=0, tzinfo=None, fold=0`.
-<DT> = datetime(year, month, day, hour=0)   # Also: `minute=0, second=0, microsecond=0, …`.
-<TD> = timedelta(weeks=0, days=0, hours=0)  # Also: `minutes=0, seconds=0, microseconds=0`.
+<D> = date(год, месяц, день)                         # Принимает только допустимые даты от 1 до 9999 г. н. э.
+<T> = time(час=0, минута=0, секунда=0)               # Также: `микросекунда=0, tzinfo=None, fold=0`.
+<DT> = datetime(год, месяц, день, час=0)             # Также: `минута=0, секунда=0, микросекунда=0, …`.
+<TD> = timedelta(недели=0, дни=0, часы=0)            # Также: `минуты=0, секунды=0, микросекунды=0`.
 ```
-* **Times and datetimes that have defined timezone are called aware and ones that don't, naive. If object is naive, it is presumed to be in the system's timezone!**
-* **`'fold=1'` means the second pass in case of time jumping back for one hour.**
-* **Timedelta normalizes arguments to ±days, seconds (< 86 400) and microseconds (< 1M). Its str() method returns `'[±D, ]H:MM:SS[.…]'` and total_seconds() a float of all seconds.**
-* **Use `'<D/DT>.weekday()'` to get the day of the week as an int, with Monday being 0.**
 
 ### Now
 ```python
-<D/DTn> = D/DT.today()                      # Current local date or naive DT. Also DT.now().
-<DTa>   = DT.now(<tzinfo>)                  # Aware DT from current time in passed timezone.
+<D/DTn> = D/DT.today()                             # Текущая локальная дата или наивное DT. Также DT.now().
+<DTa> = DT.now(<tzinfo>)                           # Осведомленное DT из текущего времени в переданном часовом поясе.
 ```
-* **To extract time use `'<DTn>.time()'`, `'<DTa>.time()'` or `'<DTa>.timetz()'`.**
 
 ### Timezone
 ```python
-<tzinfo> = timezone.utc                     # London without daylight saving time (DST).
-<tzinfo> = timezone(<timedelta>)            # Timezone with fixed offset from UTC.
-<tzinfo> = dateutil.tz.tzlocal()            # Local timezone with dynamic offset from UTC.
-<tzinfo> = zoneinfo.ZoneInfo('<iana_key>')  # 'Continent/City_Name' zone with dynamic offset.
-<DTa>    = <DT>.astimezone([<tzinfo>])      # Converts DT to the passed or local fixed zone.
-<Ta/DTa> = <T/DT>.replace(tzinfo=<tzinfo>)  # Changes object's timezone without conversion.
+<tzinfo> = timezone.utc                           # Лондон без летнего времени (DST).
+<tzinfo> = timezone(<timedelta>)                  # Часовой пояс с фиксированным смещением от UTC.
+<tzinfo> = dateutil.tz.tzlocal()                  # Локальный часовой пояс с динамическим смещением от UTC.
+<tzinfo> = zoneinfo.ZoneInfo('<iana_key>')        # Зона 'Continent/City_Name' с динамическим смещением.
+<DTa> = <DT>.astimezone([<tzinfo>])               # Преобразует DT в переданный или локальный фиксированный пояс.
+<Ta/DTa> = <T/DT>.replace(tzinfo=<tzinfo>)        # Изменяет часовой пояс объекта без преобразования.
 ```
-* **Timezones returned by tzlocal(), ZoneInfo() and implicit local timezone of naive objects have offsets that vary through time due to DST and historical changes of the base offset.**
-* **To get ZoneInfo() to work on Windows run `'> pip3 install tzdata'`.**
 
 ### Encode
 ```python
-<D/T/DT> = D/T/DT.fromisoformat(<str>)      # Object from ISO string. Raises ValueError.
-<DT>     = DT.strptime(<str>, '<format>')   # Datetime from custom string. See Format.
-<D/DTn>  = D/DT.fromordinal(<int>)          # D/DT from days since the Gregorian NYE 1.
-<DTn>    = DT.fromtimestamp(<float>)        # Local naive DT from seconds since the Epoch.
-<DTa>    = DT.fromtimestamp(<float>, <tz>)  # Aware datetime from seconds since the Epoch.
+<D/T/DT> = D/T/DT.fromisoformat(<str>)            # Объект из строки ISO. Вызывает ValueError.
+<DT> = DT.strptime(<str>, '<format>')             # Дата и время из пользовательской строки. См. Формат.
+<D/DTn> = D/DT.fromordinal(<int>)                 # D/DT из дней с григорианского Нового года 1.
+<DTn> = DT.fromtimestamp(<float>)                 # Локальное наивное DT из секунд с начала эпохи.
+<DTa> = DT.fromtimestamp(<float>, <tz>)           # Знающее дату и время из секунд с начала эпохи.
 ```
-* **ISO strings come in following forms: `'YYYY-MM-DD'`, `'HH:MM:SS.mmmuuu[±HH:MM]'`, or both separated by an arbitrary character. All parts following the hours are optional.**
-* **Python uses the Unix Epoch: `'1970-01-01 00:00 UTC'`, `'1970-01-01 01:00 CET'`, ...**
 
 ### Decode
 ```python
-<str>    = <D/T/DT>.isoformat(sep='T')      # Also `timespec='auto/hours/minutes/seconds/…'`.
-<str>    = <D/T/DT>.strftime('<format>')    # Custom string representation of the object.
-<int>    = <D/DT>.toordinal()               # Days since Gregorian NYE 1, ignoring time and tz.
-<float>  = <DTn>.timestamp()                # Seconds since the Epoch, from local naive DT.
-<float>  = <DTa>.timestamp()                # Seconds since the Epoch, from aware datetime.
+<str> = <D/T/DT>.isoformat(sep='T')                # Также `timespec='auto/hours/minutes/seconds/…'`.
+<str> = <D/T/DT>.strftime('<format>')              # Пользовательское строковое представление объекта.
+<int> = <D/DT>.toordinal()                         # Дни с 1-го григорианского Нового года, игнорируя время и tz.
+<float> = <DTn>.timestamp()                        # Секунды с начала эпохи, из локального наивного DT.
+<float> = <DTa>.timestamp()                        # Секунды с начала эпохи, из известного datetime.
 ```
 
 ### Format
@@ -669,32 +623,26 @@ import zoneinfo, dateutil.tz
 >>> dt.strftime("%dth of %B '%y (%a), %I:%M %p %Z")
 "14th of August '25 (Thu), 11:39 PM UTC+02:00"
 ```
-* **`'%z'` accepts `'±HH[:]MM'` and returns `'±HHMM'` or empty string if object is naive.**
-* **`'%Z'` accepts `'UTC/GMT'` and local timezone's code and returns timezone's name, `'UTC[±HH:MM]'` if timezone is nameless, or an empty string if object is naive.**
 
 ### Arithmetics
 ```python
-<bool>   = <D/T/DTn> > <D/T/DTn>            # Ignores time jumps (fold attribute). Also ==.
-<bool>   = <DTa>     > <DTa>                # Ignores time jumps if they share tzinfo object.
-<TD>     = <D/DTn>   - <D/DTn>              # Ignores jumps. Convert to UTC for actual delta.
-<TD>     = <DTa>     - <DTa>                # Ignores jumps if they share tzinfo object.
-<D/DT>   = <D/DT>    ± <TD>                 # Returned datetime can fall into missing hour.
-<TD>     = <TD>      * <float>              # Also `<TD> = abs(<TD>)`, `<TD> = <TD> ± <TD>`.
-<float>  = <TD>      / <TD>                 # Also `(<int>, <TD>) = divmod(<TD>, <TD>)`.
+<bool> = <D/T/DTn> > <D/T/DTn>                            # Игнорирует скачки времени (атрибут fold). Также ==.
+<bool> = <DTa> > <DTa>                                    # Игнорирует скачки времени, если они разделяют объект tzinfo.
+<TD> = <D/DTn> - <D/DTn>                                  # Игнорирует скачки. Преобразуйте в UTC для получения фактической разницы.
+<TD> = <DTa> - <DTa>                                      # Игнорирует скачки, если они разделяют объект tzinfo.
+<D/DT> = <D/DT> ± <TD>                                    # Возвращаемая дата и время могут попадать в пропущенный час.
+<TD> = <TD> * <float>                                     # Также `<TD> = abs(<TD>)`, `<TD> = <TD> ± <TD>`.
+<float> = <TD> / <TD>                                     # Также `(<int>, <TD>) = divmod(<TD>, <TD>)`.
 ```
 
 
 Function
 --------
-**Independent block of code that returns a value when called.**
 ```python
 def <func_name>(<nondefault_args>): ...                  # E.g. `def func(x, y): ...`.
 def <func_name>(<default_args>): ...                     # E.g. `def func(x=0, y=0): ...`.
 def <func_name>(<nondefault_args>, <default_args>): ...  # E.g. `def func(x, y=0): ...`.
 ```
-* **Function returns None if it doesn't encounter `'return <obj/exp>'` statement.**
-* **Run `'global <var_name>'` inside the function before assigning to global variable.**
-* **Default values are evaluated when function is first encountered in the scope. Any mutation of a mutable default value will persist between invocations!**
 
 ### Function Call
 
@@ -707,7 +655,6 @@ def <func_name>(<nondefault_args>, <default_args>): ...  # E.g. `def func(x, y=0
 
 Splat Operator
 --------------
-**Splat expands a collection into positional arguments, while splatty-splat expands a dictionary into keyword arguments.**
 ```python
 args, kwargs = (1, 2), {'z': 3}
 func(*args, **kwargs)
@@ -719,7 +666,6 @@ func(1, 2, z=3)
 ```
 
 ### Inside Function Definition
-**Splat combines zero or more positional arguments into a tuple, while splatty-splat combines zero or more keyword arguments into a dictionary.**
 ```python
 def add(*a):
     return sum(a)
@@ -750,7 +696,7 @@ def add(*a):
 ```
 
 ```python
-head, *body, tail = <collection>   # Head or tail can be omitted.
+head, *body, tail = <collection> # Head или tail можно опустить.
 ```
 
 
@@ -758,8 +704,8 @@ Inline
 ------
 ### Lambda
 ```python
-<func> = lambda: <return_value>                     # A single statement function.
-<func> = lambda <arg_1>, <arg_2>: <return_value>    # Also allows default arguments.
+<func> = lambda: <return_value>                         # Функция с одним оператором.
+<func> = lambda <arg_1>, <arg_2>: <return_value>        # Также допускает аргументы по умолчанию.
 ```
 
 ### Comprehensions
@@ -771,8 +717,7 @@ Inline
 ```
 
 ```python
->>> [l+r for l in 'abc' for r in 'abc']             # Inner loop is on the right side.
-['aa', 'ab', 'ac', ..., 'cc']
+>>> [l+r для l в 'abc' для r в 'abc']               # Внутренний цикл находится с правой стороны.['aa', 'ab', 'ac', ..., 'cc']
 ```
 
 ### Map, Filter, Reduce
@@ -788,8 +733,8 @@ from functools import reduce
 
 ### Any, All
 ```python
-<bool> = any(<collection>)                          # Is `bool(<el>)` True for any el?
-<bool> = all(<collection>)                          # True for all? Also True if empty.
+<bool> = any(<collection>)                   # Является ли `bool(<el>)` ​​Истиной для любого el?
+<bool> = all(<collection>)                   # Истина для всех? Также Истина, если пусто.
 ```
 
 ### Conditional Expression
@@ -804,51 +749,42 @@ from functools import reduce
 
 ### And, Or
 ```python
-<obj> = <exp> and <exp> [and ...]                   # Returns first false or last operand.
-<obj> = <exp> or <exp> [or ...]                     # Returns first true or last operand.
+<obj> = <exp> и <exp> [и ...]                        # Возвращает первый ложный или последний операнд.
+<obj> = <exp> или <exp> [или ...]                    # Возвращает первый истинный или последний операнд.
 ```
 
 ### Walrus Operator
 ```python
->>> [i for a in '0123' if (i := int(a)) > 0]        # Assigns to variable mid-sentence.
-[1, 2, 3]
+>>> [i for a in '0123' if (i := int(a)) > 0]         # Присваивает переменной в середине предложения.[1, 2, 3]
 ```
 
 ### Named Tuple, Enum, Dataclass
 ```python
 from collections import namedtuple
-Point = namedtuple('Point', 'x y')                  # Creates tuple's subclass.
-point = Point(0, 0)                                 # Returns its instance.
+Point = namedtuple('Point', 'x y')                                   # Создает подкласс кортежа.
+point = Point(0, 0)                                                  # Возвращает его экземпляр.
 
 from enum import Enum
-Direction = Enum('Direction', 'N E S W')            # Creates Enum's subclass.
-direction = Direction.N                             # Returns its member.
+Direction = Enum('Direction', 'N E S W')                             # Создает подкласс Enum.
+direction = Direction.N                                              # Возвращает его член.
 
 from dataclasses import make_dataclass
-Player = make_dataclass('Player', ['loc', 'dir'])   # Creates a class.
-player = Player(point, direction)                   # Returns its instance.
+Player = make_dataclass('Player', ['loc', 'dir'])                    # Создает класс.
+player = Player(point, direction)                                    # Возвращает его экземпляр.
 ```
 
 
 Imports
 -------
-**Mechanism that makes code in one file available to another file.**
 
 ```python
 import <module>            # Imports a built-in or '<module>.py'.
 import <package>           # Imports a built-in or '<package>/__init__.py'.
 import <package>.<module>  # Imports a built-in or '<package>/<module>.py'.
 ```
-* **Package is a collection of modules, but it can also define its own objects.**
-* **On a filesystem this corresponds to a directory of Python files with an optional init script.**
-* **Running `'import <package>'` does not automatically provide access to the package's modules unless they are explicitly imported in its init script.**
-* **Directory of the file that is passed to python command serves as a root of local imports.**
-* **For relative imports use `'from .[…][<pkg/module>[.…]] import <obj>'`.**
-
 
 Closure
 -------
-**We have/get a closure in Python when a nested function references a value of its enclosing function and then the enclosing function returns its nested function.**
 
 ```python
 def get_multiplier(a):
@@ -862,7 +798,6 @@ def get_multiplier(a):
 >>> multiply_by_3(10)
 30
 ```
-* **Any value that is referenced from within multiple nested functions gets shared.**
 
 ### Partial
 ```python
@@ -877,11 +812,8 @@ from functools import partial
 >>> multiply_by_3(10)
 30
 ```
-* **Partial is also useful in cases when a function needs to be passed as an argument because it enables us to set its arguments beforehand.**
-* **A few examples being: `'defaultdict(<func>)'`, `'iter(<func>, to_exc)'` and dataclass's `'field(default_factory=<func>)'`.**
 
 ### Non-Local
-**If variable is being assigned to anywhere in the scope, it is regarded as a local variable, unless it is declared as a 'global' or a 'nonlocal'.**
 
 ```python
 def get_counter():
