@@ -11,7 +11,6 @@ Contents
 
 Основные встроенные типы данных
 ```python
-
 int — целые числа (без ограничения размера, например, 42, -10).
 float — числа с плавающей точкой (например, 3.14, -0.001).
 complex — комплексные числа (например, 3 + 4j).
@@ -739,7 +738,7 @@ from functools import reduce
 
 ### Conditional Expression
 ```python
-<obj> = <exp> if <condition> else <exp>             # Only one expression is evaluated.
+<obj> = <exp> if <condition> else <exp>             # Оценивается только одно выражение.
 ```
 
 ```python
@@ -834,9 +833,6 @@ def get_counter():
 
 Decorator
 ---------
-* **A decorator takes a function, adds some functionality and returns it.**
-* **It can be any [callable](#callable), but is usually implemented as a function that returns a [closure](#closure).**
-
 ```python
 @decorator_name
 def function_that_gets_passed_to_decorator():
@@ -844,7 +840,6 @@ def function_that_gets_passed_to_decorator():
 ```
 
 ### Debugger Example
-**Decorator that prints function's name every time the function is called.**
 
 ```python
 from functools import wraps
@@ -860,23 +855,23 @@ def debug(func):
 def add(x, y):
     return x + y
 ```
-* **Wraps is a helper decorator that copies the metadata of the passed function (func) to the function it is wrapping (out). Without it, `'add.__name__'` would return `'out'`.**
 
 ### Cache
-**Decorator that caches function's return values. All function's arguments must be hashable.**
 
 ```python
-from functools import cache
+from functools import cache, lru_cache
 
+@lru_cache
+def fib(n):
+    return n if n < 2 else fib(n-2) + fib(n-1)
 @cache
 def fib(n):
     return n if n < 2 else fib(n-2) + fib(n-1)
 ```
-* **Potential problem with cache is that it can grow indefinitely. To clear stored values run `'<func>.cache_clear()'`, or use `'@lru_cache(maxsize=<int>)'` decorator instead.**
-* **CPython interpreter limits recursion depth to 3000 by default. To increase it run `'sys.setrecursionlimit(<int>)'`.**
+* **Потенциальная проблема с кэшем заключается в том, что он может расти бесконечно. Чтобы очистить сохраненные значения, запустите `'<func>.cache_clear()'` или используйте вместо этого декоратор `'@lru_cache(maxsize=<int>)'`.**
+* **Интерпретатор CPython ограничивает глубину рекурсии до 3000 по умолчанию. Чтобы увеличить ее, запустите `'sys.setrecursionlimit(<int>)'`.**
 
 ### Parametrized Decorator
-**A decorator that accepts arguments and returns a normal decorator that accepts a function.**
 ```python
 from functools import wraps
 
@@ -894,12 +889,9 @@ def debug(print_result=False):
 def add(x, y):
     return x + y
 ```
-* **Using only `'@debug'` to decorate the add() function would not work here, because debug would then receive the add() function as a 'print_result' argument. Decorators can however manually check if the argument they received is a function and act accordingly.**
-
 
 Class
 -----
-**A template for creating user-defined objects.**
 
 ```python
 class MyClass:
@@ -921,9 +913,6 @@ class MyClass:
 >>> obj.a, str(obj), repr(obj)
 (1, '1', 'MyClass(1)')
 ```
-* **Return value of str() should be readable and of repr() unambiguous.**
-* **If only repr() is defined, it will also be used for str().**
-* **Methods decorated with `'@staticmethod'` do not receive 'self' nor 'cls' as their first argument.**
 
 #### Expressions that call the str() method:
 ```python
@@ -944,8 +933,6 @@ Z = make_dataclass('Z', ['a']); print/str/repr(Z(<obj>))
 ```
 
 ### Subclass
-* **Inheritance is a mechanism that enables a class to extend another class (subclass to extend its parent), and by doing so inherit all its methods and attributes.**
-* **Subclass can then add its own methods and attributes or override inherited ones by reusing their names.**
 
 ```python
 class Person:
@@ -971,8 +958,7 @@ class Employee(Person):
 ```
 
 ### Type Annotations
-* **They add type hints to variables, arguments and functions (`'def f() -> <type>:'`).**
-* **Hints are used by type checkers like [mypy](https://pypi.org/project/mypy/), data validation libraries such as [Pydantic](https://pypi.org/project/pydantic/) and lately also by [Cython](https://pypi.org/project/Cython/) compiler. However, they are not enforced by CPython interpreter.**
+
 ```python
 from collections import abc
 
@@ -982,7 +968,6 @@ from collections import abc
 ```
 
 ### Dataclass
-**Decorator that uses class variables to generate init(), repr() and eq() special methods.**
 ```python
 from dataclasses import dataclass, field, make_dataclass
 
@@ -992,10 +977,6 @@ class <class_name>:
     <attr_name>: <type> = <default_value>
     <attr_name>: list/dict/set = field(default_factory=list/dict/set)
 ```
-* **Objects can be made [sortable](#sortable) with `'order=True'` and immutable with `'frozen=True'`.**
-* **For object to be [hashable](#hashable), all attributes must be hashable and 'frozen' must be True.**
-* **Function field() is needed because `'<attr_name>: list = []'` would make a list that is shared among all instances. Its 'default_factory' argument can be any [callable](#callable).**
-* **For attributes of arbitrary type use `'typing.Any'`.**
 
 ```python
 P = make_dataclass('P', ['x', 'y'])
@@ -1004,7 +985,6 @@ P = make_dataclass('P', [('x', float, 0), ('y', float, 0)])
 ```
 
 ### Property
-**Pythonic way of implementing getters and setters.**
 ```python
 class Person:
     @property
@@ -1024,8 +1004,6 @@ class Person:
 ```
 
 ### Slots
-**Mechanism that restricts objects to attributes listed in 'slots', reduces their memory footprint.**
-
 ```python
 class MyClassWithSlots:
     __slots__ = ['a']
@@ -1039,16 +1017,11 @@ from copy import copy, deepcopy
 <object> = copy/deepcopy(<object>)
 ```
 
-
 Duck Types
 ----------
 **A duck type is an implicit type that prescribes a set of special methods. Any object that has those methods defined is considered a member of that duck type.**
 
 ### Comparable
-* **If eq() method is not overridden, it returns `'id(self) == id(other)'`, which is the same as `'self is other'`.**
-* **That means all user-defined objects compare not equal by default.**
-* **Only the left side object has eq() method called, unless it returns NotImplemented, in which case the right object is consulted. False is returned if both return NotImplemented.**
-* **Ne() automatically works on any object that has eq() defined.**
 
 ```python
 class MyComparable:
@@ -1061,9 +1034,6 @@ class MyComparable:
 ```
 
 ### Hashable
-* **Hashable object needs both hash() and eq() methods and its hash value should never change.**
-* **Hashable objects that compare equal must have the same hash value, meaning default hash() that returns `'id(self)'` will not do.**
-* **That is why Python automatically makes classes unhashable if you only implement eq().**
 
 ```python
 class MyHashable:
@@ -1081,10 +1051,6 @@ class MyHashable:
 ```
 
 ### Sortable
-* **With 'total_ordering' decorator, you only need to provide eq() and one of lt(), gt(), le() or ge() special methods and the rest will be automatically generated.**
-* **Functions sorted() and min() only require lt() method, while max() only requires gt(). However, it is best to define them all so that confusion doesn't arise in other contexts.**
-* **When two lists, strings or dataclasses are compared, their values get compared in order until a pair of unequal values is found. The comparison of this two values is then returned. The shorter sequence is considered smaller in case of all values being equal.**
-* **To sort collection of strings in proper alphabetical order pass `'key=locale.strxfrm'` to sorted() after running `'locale.setlocale(locale.LC_COLLATE, "en_US.UTF-8")'`.**
 
 ```python
 from functools import total_ordering
@@ -1104,11 +1070,7 @@ class MySortable:
 ```
 
 ### Iterator
-* **Any object that has methods next() and iter() is an iterator.**
-* **Next() should return next item or raise StopIteration exception.**
-* **Iter() should return an iterator of remaining items, i.e. 'self'.**
-* **Any object that has iter() method can be used in a for loop.**
-```python
+
 class Counter:
     def __init__(self):
         self.i = 0
@@ -1126,15 +1088,8 @@ class Counter:
 ```
 
 #### Python has many different iterator objects:
-* **Sequence iterators returned by the [iter()](#iterator) function, such as list\_iterator and set\_iterator.**
-* **Objects returned by the [itertools](#itertools) module, such as count, repeat and cycle.**
-* **Generators returned by the [generator functions](#generator) and [generator expressions](#comprehensions).**
-* **File objects returned by the [open()](#open) function, etc.**
 
 ### Callable
-* **All functions and classes have a call() method, hence are callable.**
-* **Use `'callable(<obj>)'` or `'isinstance(<obj>, collections.abc.Callable)'` to check if object is callable. Calling an uncallable object raises TypeError.**
-* **When this cheatsheet uses `'<function>'` as an argument, it means `'<callable>'`.**
 ```python
 class Counter:
     def __init__(self):
@@ -1151,11 +1106,6 @@ class Counter:
 ```
 
 ### Context Manager
-* **With statements only work on objects that have enter() and exit() special methods.**
-* **Enter() should lock the resources and optionally return an object.**
-* **Exit() should release the resources.**
-* **Any exception that happens inside the with block is passed to the exit() method.**
-* **The exit() method can suppress the exception by returning a true value.**
 ```python
 class MyOpen:
     def __init__(self, filename):
@@ -1179,8 +1129,6 @@ Hello World!
 Iterable Duck Types
 -------------------
 ### Iterable
-* **Only required method is iter(). It should return an iterator of object's items.**
-* **Contains() automatically works on any object that has iter() defined.**
 ```python
 class MyIterable:
     def __init__(self, a):
@@ -1200,9 +1148,6 @@ True
 ```
 
 ### Collection
-* **Only required methods are iter() and len(). Len() should return the number of items.**
-* **This cheatsheet actually means `'<iterable>'` when it uses `'<collection>'`.**
-* **I chose not to use the name 'iterable' because it sounds scarier and more vague than 'collection'. The main drawback of this decision is that the reader could think a certain function doesn't accept iterators when it does, since iterators are the only built-in objects that are iterable but are not collections.**
 ```python
 class MyCollection:
     def __init__(self, a):
@@ -1216,10 +1161,6 @@ class MyCollection:
 ```
 
 ### Sequence
-* **Only required methods are getitem() and len().**
-* **Getitem() should return an item at the passed index or raise IndexError.**
-* **Iter() and contains() automatically work on any object that has getitem() defined.**
-* **Reversed() automatically works on any object that has getitem() and len() defined. It returns reversed iterator of object's items.**
 ```python
 class MySequence:
     def __init__(self, a):
@@ -1236,14 +1177,7 @@ class MySequence:
         return reversed(self.a)
 ```
 
-#### Discrepancies between glossary definitions and abstract base classes:
-* **Python's glossary defines iterable as any object with special methods iter() and/or getitem() and sequence as any object with getitem() and len(). It doesn't define collection.**
-* **Passing ABC Iterable to isinstance() or issubclass() only checks whether object/class has special method iter(), while ABC Collection checks for iter(), contains() and len().**
-
 ### ABC Sequence
-* **It's a richer interface than the basic sequence.**
-* **Extending it generates iter(), contains(), reversed(), index() and count().**
-* **Unlike `'abc.Iterable'` and `'abc.Collection'`, it is not a duck type. That is why `'issubclass(MySequence, abc.Sequence)'` would return False even if MySequence had all the methods defined. It however recognizes list, tuple, range, str, bytes, bytearray, array, memoryview and deque, since they are registered as Sequence's virtual subclasses.**
 ```python
 from collections import abc
 
@@ -1270,45 +1204,38 @@ class MyAbcSequence(abc.Sequence):
 | count()    |            |            |            |     Yes      |
 +------------+------------+------------+------------+--------------+
 ```
-* **Method iter() is required for `'isinstance(<obj>, abc.Iterable)'` to return True, however any object with getitem() will work with any code expecting an iterable.**
-* **MutableSequence, Set, MutableSet, Mapping and MutableMapping ABCs are also extendable. Use `'<abc>.__abstractmethods__'` to get names of required methods.**
-
 
 Enum
 ----
-**Class of named constants called members.**
-
 ```python
 from enum import Enum, auto
 ```
 
 ```python
 class <enum_name>(Enum):
-    <member_name> = auto()              # Increment of the last numeric value or 1.
-    <member_name> = <value>             # Values don't have to be hashable.
-    <member_name> = <el_1>, <el_2>      # Values can be collections (this is a tuple).
-```
-* **Methods receive the member they were called on as the 'self' argument.**
-* **Accessing a member named after a reserved keyword causes SyntaxError.**
-
-```python
-<member> = <enum>.<member_name>         # Returns a member. Raises AttributeError.
-<member> = <enum>['<member_name>']      # Returns a member. Raises KeyError.
-<member> = <enum>(<value>)              # Returns a member. Raises ValueError.
-<str>    = <member>.name                # Returns member's name.
-<obj>    = <member>.value               # Returns member's value.
+<member_name> = auto()                  # Приращение последнего числового значения или 1.
+<member_name> = <value>                 # Значения не обязательно должны быть хешируемыми.
+<member_name> = <el_1>, <el_2>          # Значения могут быть коллекциями (это кортеж).
 ```
 
 ```python
-<list>   = list(<enum>)                 # Returns enum's members.
-<list>   = [a.name for a in <enum>]     # Returns enum's member names.
-<list>   = [a.value for a in <enum>]    # Returns enum's member values.
+<member> = <enum>.<member_name>           # Возвращает члена. Вызывает AttributeError.
+<member> = <enum>['<member_name>']        # Возвращает члена. Вызывает KeyError.
+<member> = <enum>(<value>)                # Возвращает члена. Вызывает ValueError.
+<str> = <member>.name                     # Возвращает имя члена.
+<obj> = <member>.value                    # Возвращает значение члена.
 ```
 
 ```python
-<enum>   = type(<member>)               # Returns member's enum.
-<iter>   = itertools.cycle(<enum>)      # Returns endless iterator of members.
-<member> = random.choice(list(<enum>))  # Returns a random member.
+<list> = list(<enum>)                     # Возвращает элементы перечисления.
+<list> = [a.name for a in <enum>]         # Возвращает имена элементов перечисления.
+<list> = [a.value for a in <enum>]        # Возвращает значения элементов перечисления.
+```
+
+```python
+<enum> = type(<member>)                   # Возвращает перечисление члена.
+<iter> = itertools.cycle(<enum>)          # Возвращает бесконечный итератор членов.
+<member> = random.choice(list(<enum>))    # Возвращает случайного члена.
 ```
 
 ### Inline
@@ -1348,11 +1275,6 @@ else:
 finally:
     <code_3>
 ```
-* **Code inside the `'else'` block will only be executed if `'try'` block had no exceptions.**
-* **Code inside the `'finally'` block will always be executed (unless a signal is received).**
-* **All variables that are initialized in executed blocks are also visible in all subsequent blocks, as well as outside the try statement (only function block delimits scope).**
-* **To catch signals use `'signal.signal(signal_number, <func>)'`.**
-
 ### Catching Exceptions
 ```python
 except <exception>: ...
@@ -1360,12 +1282,6 @@ except <exception> as <name>: ...
 except (<exception>, [...]): ...
 except (<exception>, [...]) as <name>: ...
 ```
-* **Also catches subclasses of the exception.**
-* **Use `'traceback.print_exc()'` to print the full error message to stderr.**
-* **Use `'print(<name>)'` to print just the cause of the exception (its arguments).**
-* **Use `'logging.exception(<str>)'` to log the passed message, followed by the full error message of the caught exception. For details see [Logging](#logging).**
-* **Use `'sys.exc_info()'` to get exception type, object, and traceback of caught exception.**
-
 ### Raising Exceptions
 ```python
 raise <exception>
@@ -1394,27 +1310,27 @@ error_msg = ''.join(traceback.format_exception(type(<name>), <name>, <name>.__tr
 ### Built-in Exceptions
 ```text
 BaseException
- +-- SystemExit                   # Raised by the sys.exit() function.
- +-- KeyboardInterrupt            # Raised when the user hits the interrupt key (ctrl-c).
- +-- Exception                    # User-defined exceptions should be derived from this class.
-      +-- ArithmeticError         # Base class for arithmetic errors such as ZeroDivisionError.
-      +-- AssertionError          # Raised by `assert <exp>` if expression returns false value.
-      +-- AttributeError          # Raised when object doesn't have requested attribute/method.
-      +-- EOFError                # Raised by input() when it hits an end-of-file condition.
-      +-- LookupError             # Base class for errors when a collection can't find an item.
-      |    +-- IndexError         # Raised when a sequence index is out of range.
-      |    +-- KeyError           # Raised when a dictionary key or set element is missing.
-      +-- MemoryError             # Out of memory. May be too late to start deleting variables.
-      +-- NameError               # Raised when nonexistent name (variable/func/class) is used.
-      |    +-- UnboundLocalError  # Raised when local name is used before it's being defined.
-      +-- OSError                 # Errors such as FileExistsError/TimeoutError (see #Open).
-      |    +-- ConnectionError    # Errors such as BrokenPipeError/ConnectionAbortedError.
-      +-- RuntimeError            # Raised by errors that don't fall into other categories.
-      |    +-- NotImplementedEr…  # Can be raised by abstract methods or by unfinished code.
-      |    +-- RecursionError     # Raised if max recursion depth is exceeded (3k by default).
-      +-- StopIteration           # Raised when an empty iterator is passed to next().
-      +-- TypeError               # When an argument of the wrong type is passed to function.
-      +-- ValueError              # When argument has the right type but inappropriate value.
+ +-- SystemExit                   # Вызывается функцией sys.exit().
+ +-- KeyboardInterrupt            # Возникает, когда пользователь нажимает клавишу прерывания (ctrl-c).
+ +-- Exception                    # Исключения, определяемые пользователем, должны быть производными от этого класса.
+      +-- ArithmeticError         # Базовый класс для арифметических ошибок, таких как ZeroDivisionError.
+      +-- AssertionError          # Вызывается `assert <exp>`, если выражение возвращает ложное значение.
+      +-- AttributeError          # Возникает, когда у объекта нет запрошенного атрибута/метода.
+      +-- EOFError                # Вызывается функцией input() при достижении конца файла.
+      +-- LookupError             # Базовый класс для ошибок, когда коллекция не может найти элемент.
+      |    +-- IndexError         # Возникает, когда индекс последовательности выходит за пределы допустимого диапазона.
+      |    +-- KeyError           # Возникает, если отсутствует ключ словаря или элемент набора.
+      +-- MemoryError             # Недостаточно памяти. Может быть слишком поздно начинать удалять переменные.
+      +-- NameError               # Возникает при использовании несуществующего имени (переменной/функции/класса).
+      |    +-- UnboundLocalError  # Возникает, когда локальное имя используется до его определения.
+      +-- OSError                 # Ошибки, такие как FileExistsError/TimeoutError (см. #Open).
+      |    +-- ConnectionError    # Ошибки, такие как BrokenPipeError/ConnectionAbortedError.
+      +-- RuntimeError            # Возникает из-за ошибок, не попадающих в другие категории.
+      |    +-- NotImplementedEr…  # Может быть вызвано абстрактными методами или незавершенным кодом.
+      |    +-- RecursionError     # Возникает при превышении максимальной глубины рекурсии (по умолчанию 3 КБ).
+      +-- StopIteration           # Возникает, когда в next() передается пустой итератор.
+      +-- TypeError               # Когда в функцию передается аргумент неправильного типа.
+      +-- ValueError              # Когда аргумент имеет правильный тип, но неподходящее значение.
 ```
 
 #### Collections and their exceptions:
@@ -1445,7 +1361,6 @@ class MyInputError(MyError): pass
 
 Exit
 ----
-**Exits the interpreter by raising SystemExit exception.**
 ```python
 import sys
 sys.exit()                        # Exits with exit code 0 (success).
@@ -1459,27 +1374,18 @@ Print
 ```python
 print(<el_1>, ..., sep=' ', end='\n', file=sys.stdout, flush=False)
 ```
-* **Use `'file=sys.stderr'` for messages about errors.**
-* **Stdout and stderr streams hold output in a buffer until they receive a string containing '\n' or '\r', buffer reaches 4096 characters, `'flush=True'` is used, or program exits.**
 
 ### Pretty Print
 ```python
 from pprint import pprint
 pprint(<collection>, width=80, depth=None, compact=False, sort_dicts=True)
 ```
-* **Each item is printed on its own line if collection exceeds 'width' characters.**
-* **Nested collections that are 'depth' levels deep get printed as '...'.**
-
 
 Input
 -----
 ```python
 <str> = input()
 ```
-* **Reads a line from the user input or pipe if present (trailing newline gets stripped).**
-* **If argument is passed, it gets printed to the standard output before input is read.**
-* **EOFError is raised if user hits EOF (ctrl-d/ctrl-z⏎) or if input stream is exhausted.**
-
 
 Command Line Arguments
 ----------------------
@@ -1492,31 +1398,24 @@ arguments    = sys.argv[1:]
 ### Argument Parser
 ```python
 from argparse import ArgumentParser, FileType
-p = ArgumentParser(description=<str>)                             # Returns a parser.
-p.add_argument('-<short_name>', '--<name>', action='store_true')  # Flag (defaults to False).
-p.add_argument('-<short_name>', '--<name>', type=<type>)          # Option (defaults to None).
-p.add_argument('<name>', type=<type>, nargs=1)                    # Mandatory first argument.
-p.add_argument('<name>', type=<type>, nargs='+')                  # Mandatory remaining args.
-p.add_argument('<name>', type=<type>, nargs='?/*')                # Optional argument/s.
-args  = p.parse_args()                                            # Exits on parsing error.
-<obj> = args.<name>                                               # Returns `<type>(<arg>)`.
+p = ArgumentParser(description=<str>)                                     # Возвращает парсер.
+p.add_argument('-<short_name>', '--<name>', action='store_true')          # Флаг (по умолчанию False).
+p.add_argument('-<short_name>', '--<name>', type=<type>)                  # Опция (по умолчанию None).
+p.add_argument('<name>', type=<type>, nargs=1)                            # Обязательный первый аргумент.
+p.add_argument('<name>', type=<type>, nargs='+')                          # Обязательные оставшиеся аргументы.
+p.add_argument('<name>', type=<type>, nargs='?/*')                        # Необязательный аргумент/ы.
+args = p.parse_args()                                                     # Выход при ошибке синтаксического анализа.
+<obj> = args.<name>                                                       # Возвращает `<type>(<arg>)`.
 ```
-
-* **Use `'help=<str>'` to set argument description that will be displayed in help message.**
-* **Use `'default=<obj>'` to set option's or optional argument's default value.**
-* **Use `'type=FileType(<mode>)'` for files. Accepts 'encoding', but 'newline' is None.**
-
 
 Open
 ----
-**Opens a file and returns the corresponding file object.**
-
 ```python
 <file> = open(<path>, mode='r', encoding=None, newline=None)
 ```
-* **`'encoding=None'` means that the default encoding is used, which is platform dependent. Best practice is to use `'encoding="utf-8"'` whenever possible.**
-* **`'newline=None'` means all different end of line combinations are converted to '\n' on read, while on write all '\n' characters are converted to system's default line separator.**
-* **`'newline=""'` means no conversions take place, but input is still broken into chunks by readline() and readlines() on every '\n', '\r' and '\r\n'.**
+* **`'encoding=None' ` означает, что используется кодировка по умолчанию, которая зависит от платформы. Лучше всего использовать `'encoding="utf-8"'`, когда это возможно.**
+* **`'newline=None'`   означает, что все различные комбинации конца строки преобразуются в '\n' при чтении, а при записи все символы '\n' преобразуются в разделитель строк по умолчанию в системе.**
+* **`'newline=""'`     означает, что преобразования не выполняются, но ввод по-прежнему разбивается на фрагменты с помощью readline() и readlines() для каждого '\n', '\r' и '\r\n'.**
 
 ### Modes
 * **`'r'`  - Read. Used by default.**
@@ -1536,26 +1435,25 @@ Open
 
 ### File Object
 ```python
-<file>.seek(0)                      # Moves to the start of the file.
-<file>.seek(offset)                 # Moves 'offset' chars/bytes from the start.
-<file>.seek(0, 2)                   # Moves to the end of the file.
-<bin_file>.seek(±offset, origin)    # Origin: 0 start, 1 current position, 2 end.
+<file>.seek(0)                    # Перемещает в начало файла.
+<file>.seek(offset)               # Перемещает на 'offset' символов/байтов от начала.
+<file>.seek(0, 2)                 # Перемещает в конец файла.
+<bin_file>.seek(±offset, origin)  # Origin: 0 начало, 1 текущая позиция, 2 конец.
 ```
 
 ```python
-<str/bytes> = <file>.read(size=-1)  # Reads 'size' chars/bytes or until EOF.
-<str/bytes> = <file>.readline()     # Returns a line or empty string/bytes on EOF.
-<list>      = <file>.readlines()    # Returns a list of remaining lines.
-<str/bytes> = next(<file>)          # Returns a line using buffer. Do not mix.
+<str/bytes> = <file>.read(size=-1)    # Читает 'size' символов/байтов или до EOF.
+<str/bytes> = <file>.readline()       # Возвращает строку или пустую строку/байты по EOF.
+<list> = <file>.readlines()           # Возвращает список оставшихся строк.
+<str/bytes> = next(<file>)            # Возвращает строку с использованием буфера. Не смешивайте.
 ```
 
 ```python
-<file>.write(<str/bytes>)           # Writes a string or bytes object.
-<file>.writelines(<collection>)     # Writes a coll. of strings or bytes objects.
-<file>.flush()                      # Flushes write buffer. Runs every 4096/8192 B.
-<file>.close()                      # Closes the file after flushing write buffer.
+<file>.write(<str/bytes>)        # Записывает строку или объект байтов.
+<file>.writelines(<collection>)  # Записывает коллекцию строк или объектов байтов.
+<file>.flush()                   # Очищает буфер записи. Запускается каждые 4096/8192 Б.
+<file>.close()                   # Закрывает файл после очистки буфера записи.
 ```
-* **Methods do not add or strip trailing newlines, not even writelines().**
 
 ### Read Text from File
 ```python
@@ -1580,20 +1478,20 @@ from pathlib import Path
 ```
 
 ```python
-<str>  = os.getcwd()                # Returns working dir. Starts as shell's $PWD.
-<str>  = os.path.join(<path>, ...)  # Joins two or more pathname components.
-<str>  = os.path.realpath(<path>)   # Resolves symlinks and calls path.abspath().
+<str> = os.getcwd()                 # Возвращает рабочий каталог. Начинается как $PWD оболочки.
+<str> = os.path.join(<path>, ...)   # Объединяет два или более компонентов имени пути.
+<str> = os.path.realpath(<path>)    # Разрешает символические ссылки и вызывает path.abspath().
 ```
 
 ```python
-<str>  = os.path.basename(<path>)   # Returns final component of the path.
-<str>  = os.path.dirname(<path>)    # Returns path without the final component.
-<tup.> = os.path.splitext(<path>)   # Splits on last period of the final component.
+<str> = os.path.basename(<path>)    # Возвращает конечный компонент пути.
+<str> = os.path.dirname(<path>)     # Возвращает путь без конечного компонента.
+<tup.> = os.path.splitext(<path>)   # Разделяет по последнему периоду конечного компонента.
 ```
 
 ```python
-<list> = os.listdir(path='.')       # Returns filenames located at the path.
-<list> = glob.glob('<pattern>')     # Returns paths matching the wildcard pattern.
+<list> = os.listdir(path='.')       # Возвращает имена файлов, расположенных по пути.
+<list> = glob.glob('<pattern>')     # Возвращает пути, соответствующие шаблону подстановочных знаков.
 ```
 
 ```python
@@ -1608,45 +1506,44 @@ from pathlib import Path
 ```
 
 ### DirEntry
-**Unlike listdir(), scandir() returns DirEntry objects that cache isfile, isdir, and on Windows also stat information, thus significantly increasing the performance of code that requires it.**
 
 ```python
-<iter> = os.scandir(path='.')       # Returns DirEntry objects located at the path.
-<str>  = <DirEntry>.path            # Returns the whole path as a string.
-<str>  = <DirEntry>.name            # Returns final component as a string.
-<file> = open(<DirEntry>)           # Opens the file and returns its file object.
+<iter> = os.scandir(path='.')   # Возвращает объекты DirEntry, расположенные по пути.
+<str> = <DirEntry>.path         # Возвращает весь путь в виде строки.
+<str> = <DirEntry>.name         # Возвращает конечный компонент в виде строки.
+<file> = open(<DirEntry>)       # Открывает файл и возвращает его файловый объект.
 ```
 
 ### Path Object
 ```python
-<Path> = Path(<path> [, ...])       # Accepts strings, Paths, and DirEntry objects.
-<Path> = <path> / <path> [/ ...]    # First or second path must be a Path object.
-<Path> = <Path>.resolve()           # Returns absolute path with resolved symlinks.
+<Path> = Path(<path> [, ...])       # Принимает строки, объекты Paths и DirEntry.
+<Path> = <path> / <path> [/ ...]    # Первый или второй путь должен быть объектом Path.
+<Path> = <Path>.resolve()           # Возвращает абсолютный путь с разрешенными символическими ссылками.
 ```
 
 ```python
-<Path> = Path()                     # Returns relative CWD. Also Path('.').
-<Path> = Path.cwd()                 # Returns absolute CWD. Also Path().resolve().
-<Path> = Path.home()                # Returns user's home directory (absolute).
-<Path> = Path(__file__).resolve()   # Returns module's path if CWD wasn't changed.
+<Path> = Path()                   # Возвращает относительный CWD. Также Path('.').
+<Path> = Path.cwd()               # Возвращает абсолютный CWD. Также Path().resolve().
+<Path> = Path.home()              # Возвращает домашний каталог пользователя (абсолютный).
+<Path> = Path(__file__).resolve() # Возвращает путь к модулю, если CWD не был изменен.
 ```
 
 ```python
-<Path> = <Path>.parent              # Returns Path without the final component.
-<str>  = <Path>.name                # Returns final component as a string.
-<str>  = <Path>.suffix              # Returns name's last extension, e.g. '.py'.
-<str>  = <Path>.stem                # Returns name without the last extension.
-<tup.> = <Path>.parts               # Returns all components as strings.
+<Path> = <Path>.parent       # Возвращает Path без конечного компонента.
+<str> = <Path>.name          # Возвращает конечный компонент в виде строки.
+<str> = <Path>.suffix        # Возвращает последнее расширение имени, например, '.py'.
+<str> = <Path>.stem          # Возвращает имя без последнего расширения.
+<tup.> = <Path>.parts        # Возвращает все компоненты в виде строк.
 ```
 
 ```python
-<iter> = <Path>.iterdir()           # Returns directory contents as Path objects.
-<iter> = <Path>.glob('<pattern>')   # Returns Paths matching the wildcard pattern.
+<iter> = <Path>.iterdir()         # Возвращает содержимое каталога как объекты Path.
+<iter> = <Path>.glob('<pattern>') # Возвращает Paths, соответствующие шаблону подстановочных знаков.
 ```
 
 ```python
-<str>  = str(<Path>)                # Returns path as str. Also <Path>.as_uri().
-<file> = open(<Path>)               # Also <Path>.read/write_text/bytes(<args>).
+<str> = str(<Path>)       # Возвращает путь как str. Также <Path>.as_uri().
+<file> = open(<Path>)     # Также <Path>.read/write_text/bytes(<args>).
 ```
 
 
@@ -1657,36 +1554,34 @@ import os, shutil, subprocess
 ```
 
 ```python
-os.chdir(<path>)                    # Changes the current working directory (CWD).
-os.mkdir(<path>, mode=0o777)        # Creates a directory. Permissions are in octal.
-os.makedirs(<path>, mode=0o777)     # Creates all path's dirs. Also `exist_ok=False`.
+os.chdir(<path>)                # Изменяет текущий рабочий каталог (CWD).
+os.mkdir(<path>, mode=0o777)    # Создает каталог. Права доступа указаны в восьмеричном формате.
+os.makedirs(<path>, mode=0o777) # Создает все каталоги пути. Также `exist_ok=False`.
 ```
 
 ```python
-shutil.copy(from, to)               # Copies the file. 'to' can exist or be a dir.
-shutil.copy2(from, to)              # Also copies creation and modification time.
-shutil.copytree(from, to)           # Copies the directory. 'to' must not exist.
+shutil.copy(from, to)         # Копирует файл. 'to' может существовать или быть каталогом.
+shutil.copy2(from, to)        # Также копирует время создания и изменения.
+shutil.copytree(from, to)     # Копирует каталог. 'to' не должен существовать.
 ```
 
 ```python
-os.rename(from, to)                 # Renames/moves the file or directory.
-os.replace(from, to)                # Same, but overwrites file 'to' even on Windows.
-shutil.move(from, to)               # Rename() that moves into 'to' if it's a dir.
+os.rename(from, to)         # Переименовывает/перемещает файл или каталог.
+os.replace(from, to)        # То же самое, но перезаписывает файл 'to' даже в Windows.
+shutil.move(from, to)       # Rename(), который перемещает в 'to', если это каталог.
 ```
 
 ```python
-os.remove(<path>)                   # Deletes the file.
-os.rmdir(<path>)                    # Deletes the empty directory.
-shutil.rmtree(<path>)               # Deletes the directory.
+os.remove(<path>)         # Удаляет файл.
+os.rmdir(<path>)          # Удаляет пустой каталог.
+shutil.rmtree(<path>)     # Удаляет каталог.
 ```
-* **Paths can be either strings, Path objects, or DirEntry objects.**
-* **Functions report OS related errors by raising OSError or one of its [subclasses](#exceptions-1).**
 
 ### Shell Commands
 ```python
-<pipe> = os.popen('<commands>')     # Executes commands in sh/cmd. Returns combined stdout.
-<str>  = <pipe>.read(size=-1)       # Reads 'size' chars or until EOF. Also readline/s().
-<int>  = <pipe>.close()             # Returns None if last command exited with returncode 0.
+<pipe> = os.popen('<commands>') # Выполняет команды в sh/cmd. Возвращает объединенный stdout.
+<str> = <pipe>.read(size=-1) # Читает символы 'size' или до EOF. Также readline/s().
+<int> = <pipe>.close() # Возвращает None, если последняя команда завершилась с кодом возврата 0.
 ```
 
 #### Sends '1 + 1' to the basic calculator and captures its output:
