@@ -784,6 +784,23 @@ from functools import partial
 >>> multiply_by_3(10)
 30
 ```
+### Хвостовая рекурсия – это вид рекурсии, где последний вызов функции является рекурсивным, без необходимости хранить промежуточные состояния.
+Обычная рекурсивная функция:
+```python
+def factorial(n):
+    if n == 0:
+        return 1
+    return n * factorial(n - 1)
+```
+Хвостовая рекурсия (оптимизированный вариант):
+```python
+def tail_recursive_factorial(n, accumulator=1):
+    if n == 0:
+        return accumulator  # Возвращаем результат сразу, не храним промежуточные данные
+    return tail_recursive_factorial(n - 1, n * accumulator)  # Последнее действие — вызов функции
+
+print(tail_recursive_factorial(5))
+```
 ### Timeit — измерение времени выполнения небольшого блока кода
 ```python
 import timeit
@@ -908,7 +925,32 @@ def greet():
 print(greet.__name__)  # Выведет: greet
 print(greet.__doc__)   # Выведет: Функция приветствия
 ```
+### Пузырьковая сортировка - простой алгоритм, который многократно проходит по массиву, сравнивая соседние элементы и обменивая их, если они находятся в неправильном порядке.
+```python
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        swapped = False
+        for j in range(0, n - i - 1):
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                swapped = True
+        if not swapped:
+            break
+    return arr
 
+arr = [5, 2, 8, 1, 9]
+print(bubble_sort(arr))  # Вывод: [1, 2, 5, 8, 9]
+ ```
+
+### Абстрактный класс в Python – создается через ABC из модуля abc, методы объявляются с @abstractmethod, принуждая наследников реализовать их.
+```python
+from abc import ABC, abstractmethod
+class User(ABC):
+    @abstractmethod
+    def get_name(self):
+        pass
+```
 ### Cache, lru_cache
 
 ```python
@@ -945,6 +987,54 @@ def add(x, y):
 
 Class
 -----
+Два способа создания класса:
+```python
+class MyClass: pass
+MyClass = type('MyClass', (), {})
+```
+### Что такое Diamond problem? Проблема ромбовидного наследования, когда неочевидно, какой метод должен быть вызван при обращении из класса-наследника.
+```python
+class A:
+    def greet(self):
+        print("Привет из A")
+
+class B(A):
+    def greet(self):
+        print("Привет из B")
+
+class C(A):
+    def greet(self):
+        print("Привет из C")
+
+class D(B, C):  # Множественное наследование
+    pass
+
+d = D()
+d.greet()  # Какой метод вызовется?
+
+
+class A:
+    def greet(self):
+        print("Привет из A")
+
+class B(A):
+    def greet(self):
+        super().greet()
+        print("Привет из B")
+
+class C(A):
+    def greet(self):
+        super().greet()
+        print("Привет из C")
+
+class D(B, C):
+    def greet(self):
+        super().greet()
+        print("Привет из D")
+
+d = D()
+d.greet()
+```
 
 ```python
 class MyClass:
@@ -1083,7 +1173,27 @@ class MyComparable:
             return self.a == other.a
         return NotImplemented
 ```
+### Рефлексия
+```python
+import inspect
 
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def greet(self):
+        return f"Привет, меня зовут {self.name}, мне {self.age} лет!"
+
+# Создаем объект
+person = Person("Алекс", 30)
+print(getattr(person, "name"))  # Выведет: Алекс
+setattr(person, "age", 31)
+print(person.age)  # Выведет: 31
+if hasattr(person, "greet"):
+    print(person.greet())  # Выведет: Привет, меня зовут Алекс, мне 31 лет!
+print(inspect.getmembers(person))
+```
 ### Hashable
 
 ```python
@@ -1285,6 +1395,85 @@ print(u._get_name())
 # print(u.__get_age())
 print(u._User1__get_age())
 ```
+
+### Миксин – класс, используемый для добавления функциональности другим классам без наследования всей структуры.
+```python
+class LoggingMixin:
+    def log(self, message: str) -> None:
+        print(f"[LOG] {message}")
+
+# Класс для работы со списком чисел
+class NumberList:
+    def __init__(self, numbers: list):
+        self.numbers = numbers
+
+    def add_number(self, number: int) -> None:
+        self.numbers.append(number)
+
+# Класс, использующий миксин для логирования
+class LoggedNumberList(LoggingMixin, NumberList):
+    def add_number(self, number: int) -> None:
+        super().add_number(number)
+        self.log(f"Added number: {number}")
+# Использование
+numbers = LoggedNumberList([1, 2, 3])
+numbers.add_number(4)  # Вывод: [LOG] Added number: 4
+print(numbers.numbers)  # Вывод: [1, 2, 3, 4]
+```
+
+### Метаклассы – классы, которые управляют созданием других классов, позволяют изменять их поведение на уровне определения (type или пользовательские метаклассы).
+```python
+class AutoPrefixMeta(type):
+    def __new__(cls, name, bases, attrs):
+        # Создаем новый словарь атрибутов
+        new_attrs = {}
+        for attr_name, attr_value in attrs.items():
+            # Если атрибут является методом, добавляем префикс _auto_
+            if callable(attr_value):
+                new_attrs[f'_auto_{attr_name}'] = attr_value
+            else:
+                new_attrs[attr_name] = attr_value
+        # Вызываем __new__ родительского метакласса (type) для создания класса
+        return super().__new__(cls, name, bases, new_attrs)
+# Класс, использующий метакласс
+class MyClass(metaclass=AutoPrefixMeta):
+    def say_hello(self):
+        return "Hello!"
+    
+    def say_goodbye(self):
+        return "Goodbye!"
+    
+    class_attribute = 42
+
+# Проверка
+obj = MyClass()
+print(obj._auto_say_hello())    # Вывод: Hello!
+print(obj._auto_say_goodbye())  # Вывод: Goodbye!
+print(obj.class_attribute)      # Вывод: 42
+print(hasattr(obj, 'say_hello'))  # Вывод: False (оригинальный метод отсутствует)
+```
+
+### Singleton – шаблон проектирования, обеспечивающий существование только одного экземпляра класса.
+```python
+class Singleton(type):
+    _instance = None  # Храним единственный экземпляр
+
+    def __call__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super().__call__(*args, **kwargs)
+        return cls._instance
+
+class Db(metaclass=Singleton):
+    name = "Test"
+
+# Проверка
+ob1 = Db()
+ob2 = Db()
+print(ob1.name)  # Вывод: Test
+print(ob2.name)  # Вывод: Test
+print(ob1 is ob2)  # Вывод: True (один и тот же объект)
+```
+
 Enum
 ----
 ```python
@@ -2195,6 +2384,48 @@ with <lock>:                                   # Входит в блок, вы�
 <bool> = <Future>.cancel()                 # Отменяет или возвращает False, если выполняется/завершен.
 <iter> = as_completed(<coll_of_Futures>)   # `next(<iter>)` возвращает следующий завершенный Future.
 ```
+### Мультипроцессинг – запуск нескольких процессов для распределения нагрузки, полезно для параллельных вычислений.
+```python
+import multiprocessing
+import time
+
+def square(number: int) -> int:
+    """Функция для вычисления квадрата числа."""
+    print(f"Process {multiprocessing.current_process().name} computing square of {number}")
+    return number * number
+
+def main():
+    numbers = [1, 2, 3, 4, 5, 6, 7, 8]
+    num_processes = 4  # Количество процессов
+
+    # Создаем пул процессов
+    start_time = time.time()
+    with multiprocessing.Pool(processes=num_processes) as pool:
+        # Распределяем задачи между процессами
+        results = pool.map(square, numbers)
+    
+    end_time = time.time()
+    
+    print(f"Results: {results}")
+    print(f"Time taken: {end_time - start_time:.2f} seconds")
+
+if __name__ == '__main__':
+    main()
+from multiprocessing import Process, Queue
+
+def worker(q):
+    q.put("Данные переданы!")
+
+if __name__ == "__main__":
+
+Использование очереди
+    q = Queue()
+    p = Process(target=worker, args=(q,))
+    p.start()
+    print(q.get())  # Получаем данные из очереди
+    p.join()
+```
+
 Coroutines
 ----------
 
