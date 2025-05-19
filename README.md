@@ -195,25 +195,6 @@ Iterator
 <el>   = next(<iter> [, default])          # Вызывает StopIteration или возвращает «default» в конце.
 <list> = list(<iter>)                      # Возвращает список оставшихся элементов итератора.
 ```
-```python
-arr = [1, 2, 3]
-class Iter:
-    def __init__(self, arr: list):
-        self.arr = arr
-        self.index = 0
-    def __iter__(self):
-        return self
-    def __next__(self):
-        if self.index<len(self.arr):
-            item = self.arr[self.index]
-            self.index += 1
-            return item
-        else:
-            raise StopIteration
-obj = Iter(arr)
-for i in obj:
-    print(i)
-```
 ### Itertools
 ```python
 import itertools as it
@@ -1274,7 +1255,36 @@ class MyAbcSequence(abc.Sequence):
 | count()    |            |            |            |     Yes      |
 +------------+------------+------------+------------+--------------+
 ```
+Accessify — это библиотека для Python, которая добавляет поддержку модификаторов доступа (private, protected) и интерфейсов
+```python
+pip install accessify
+```
+```python
+from accessify import protected, private
 
+class User:
+    _name = "Alex"
+    __age=30
+    
+u = User()
+print(u._name)
+print(u._User__age)
+
+class User1:
+    _name = "Alex"
+    __age=30
+    @protected
+    def _get_name(self):
+        return self._name
+    @private
+    def __get_age(self):
+        return self.__age
+    
+u = User1()
+print(u._get_name())
+# print(u.__get_age())
+print(u._User1__get_age())
+```
 Enum
 ----
 ```python
@@ -1538,8 +1548,6 @@ def write_to_file(filename, text):
     with open(filename, 'w', encoding='utf-8') as file:
         file.write(text)
 ```
-
-
 Paths
 -----
 ```python
@@ -1953,34 +1961,32 @@ print(arr)  # array('i', [1, 2, 10, 5, 6])
 ```
 
 ```python
-<bytes> = bytes(<array>)                       # Returns a copy of array's memory.
-<file>.write(<array>)                          # Writes array's memory to the binary file.
+<bytes> = bytes(<array>)    # Возвращает копию памяти массива.
+<file>.write(<array>)       # Записывает память массива в двоичный файл.
 ```
 
 
 Memory View
 -----------
-**A sequence object that points to the memory of another bytes-like object. Each element can reference a single or multiple consecutive bytes, depending on format. Order and number of elements can be changed with slicing.**
-
 ```python
-<mview> = memoryview(<bytes/bytearray/array>)  # Immutable if bytes is passed, else mutable.
-<obj>   = <mview>[index]                       # Returns int or float. Bytes if format is 'c'.
-<mview> = <mview>[<slice>]                     # Returns memoryview with rearranged elements.
-<mview> = <mview>.cast('<typecode>')           # Only works between B/b/c and other types.
-<mview>.release()                              # Releases memory buffer of the base object.
+<mview> = memoryview(<bytes/bytearray/array>)        # Неизменяемый, если переданы байты, в противном случае изменяемый.
+<obj> = <mview>[index]                               # Возвращает int или float. Bytes, если формат 'c'.
+<mview> = <mview>[<slice>]                           # Возвращает memoryview с переупорядоченными элементами.
+<mview> = <mview>.cast('<typecode>')                 # Работает только между B/b/c и другими типами.
+<mview>.release()                                    # Освобождает буфер памяти базового объекта.
 ```
 
 ```python
-<bytes> = bytes(<mview>)                       # Returns a new bytes object. Also bytearray().
-<bytes> = <bytes>.join(<coll_of_mviews>)       # Joins memoryviews using bytes as a separator.
-<array> = array('<typecode>', <mview>)         # Treats memoryview as a sequence of numbers.
-<file>.write(<mview>)                          # Writes `bytes(<mview>)` to the binary file.
+<bytes> = bytes(<mview>)                 # Возвращает новый объект bytes. Также bytearray().
+<bytes> = <bytes>.join(<coll_of_mviews>) # Объединяет memoryviews, используя bytes в качестве разделителя.
+<array> = array('<typecode>', <mview>)   # Рассматривает memoryview как последовательность чисел.
+<file>.write(<mview>)                    # Записывает `bytes(<mview>)` в двоичный файл.
 ```
 
 ```python
-<list>  = list(<mview>)                        # Returns a list of ints, floats or bytes.
-<str>   = str(<mview>, 'utf-8')                # Treats memoryview as a bytes object.
-<str>   = <mview>.hex()                        # Returns hex pairs. Accepts `sep=<str>`.
+<list> = list(<mview>)        # Возвращает список целых чисел, чисел с плавающей точкой или байтов.
+<str> = str(<mview>, 'utf-8') # Рассматривает memoryview как объект байтов.
+<str> = <mview>.hex()         # Возвращает шестнадцатеричные пары. Принимает `sep=<str>`.
 ```
 
 
@@ -1993,17 +1999,16 @@ from collections import deque
 ```
 
 ```python
-<deque> = deque(<collection>)                  # Use `maxlen=<int>` to set size limit.
-<deque>.appendleft(<el>)                       # Opposite element is dropped if full.
-<deque>.extendleft(<collection>)               # Passed collection gets reversed.
-<deque>.rotate(n=1)                            # Last element becomes first.
-<el> = <deque>.popleft()                       # Raises IndexError if deque is empty.
+<deque> = deque(<collection>)    # Используйте `maxlen=<int>` для установки ограничения размера.
+<deque>.appendleft(<el>)         # Противоположный элемент отбрасывается, если заполнен.
+<deque>.extendleft(<collection>) # Переданная коллекция переворачивается.
+<deque>.rotate(n=1)              # Последний элемент становится первым.
+<el> = <deque>.popleft()         # Вызывает IndexError, если deque пуст.
 ```
 
 
 Operator
 --------
-**Module of functions that provide the functionality of operators. Functions are grouped by operator precedence, from least to most binding. Functions and operators in lines 1, 3 and 5 are also ordered by precedence within a group.**
 ```python
 import operator as op
 ```
@@ -2025,13 +2030,9 @@ sorted_by_second = sorted(<coll>, key=op.itemgetter(1))
 sorted_by_both   = sorted(<coll>, key=op.itemgetter(1, 0))
 first_element    = op.methodcaller('pop', 0)(<list>)
 ```
-* **Most operators call the object's special method that is named after them (second object is passed as an argument), while logical operators call their own code that relies on bool().**
-* **Comparisons can be chained: `'x < y < z'` gets converted to `'(x < y) and (y < z)`'.**
-
 
 Match Statement
 ---------------
-**Executes the first block with matching pattern. Added in Python 3.10.**
 
 ```python
 match <object/expression>:
@@ -2042,22 +2043,16 @@ match <object/expression>:
 
 ### Patterns
 ```python
-<value_pattern> = 1/'abc'/True/None/math.pi        # Matches the literal or a dotted name.
-<class_pattern> = <type>()                         # Matches any object of that type (or ABC).
-<wildcard_patt> = _                                # Matches any object. Useful in last case.
-<capture_patt>  = <name>                           # Matches any object and binds it to name.
-<as_pattern>    = <pattern> as <name>              # Binds match to name. Also <type>(<name>).
-<or_pattern>    = <pattern> | <pattern> [| ...]    # Matches any of the patterns.
-<sequence_patt> = [<pattern>, ...]                 # Matches sequence with matching items.
-<mapping_patt>  = {<value_pattern>: <patt>, ...}   # Matches dictionary with matching items.
-<class_pattern> = <type>(<attr_name>=<patt>, ...)  # Matches object with matching attributes.
+<value_pattern> = 1/'abc'/True/None/math.pi            # Соответствует литералу или имени с точкой.
+<class_pattern> = <type>()                             # Соответствует любому объекту этого типа (или ABC).
+<wildcard_patt> = _                                    # Соответствует любому объекту. Полезно в последнем случае.
+<capture_pattern> = <name>                             # Соответствует любому объекту и привязывает его к имени.
+<as_pattern> = <pattern> as <name>                     # Связывает соответствие с именем. Также <type>(<name>).
+<or_pattern> = <pattern> | <pattern> [| ...]           # Соответствует любому из шаблонов.
+<sequence_patt> = [<pattern>, ...]                     # Соответствует последовательности с соответствующими элементами.
+<mapping_patt> = {<value_pattern>: <patt>, ...}        # Соответствует словарю с соответствующими элементами.
+<class_pattern> = <type>(<attr_name>=<patt>, ...)      # Сопоставляет объект с соответствующими атрибутами.
 ```
-* **Sequence pattern can also be written as a tuple.**
-* **Use `'*<name>'` and `'**<name>'` in sequence/mapping patterns to bind remaining items.**
-* **Sequence pattern must match all items of the collection, while mapping pattern does not.**
-* **Patterns can be surrounded with brackets to override precedence (`'|'` > `'as'` > `','`).**
-* **Built-in types allow a single positional pattern that is matched against the entire object.**
-* **All names that are bound in the matching case, as well as variables initialized in its block, are visible after the match statement.**
 
 ### Example
 ```python
@@ -2078,37 +2073,32 @@ import logging as log
 ```
 
 ```python
-log.basicConfig(filename=<path>, level='DEBUG')   # Configures the root logger (see Setup).
-log.debug/info/warning/error/critical(<str>)      # Sends message to the root logger.
-<Logger> = log.getLogger(__name__)                # Returns logger named after the module.
-<Logger>.<level>(<str>)                           # Sends message to the logger.
-<Logger>.exception(<str>)                         # Error() that appends caught exception.
+log.basicConfig(filename=<path>, level='DEBUG')         # Настраивает корневой регистратор (см. Настройка).
+log.debug/info/warning/error/critical(<str>)            # Отправляет сообщение корневому регистратору.
+<Logger> = log.getLogger(__name__)                      # Возвращает регистратор, названный по имени модуля.
+<Logger>.<level>(<str>)                                 # Отправляет сообщение регистратору.
+<Logger>.exception(<str>)                               # Error(), который добавляет перехваченное исключение.
 ```
 
 ### Setup
 ```python
 log.basicConfig(
-    filename=None,                                # Logs to stderr or appends to file.
-    format='%(levelname)s:%(name)s:%(message)s',  # Add '%(asctime)s' for local datetime.
-    level=log.WARNING,                            # Drops messages with lower priority.
-    handlers=[log.StreamHandler(sys.stderr)]      # Uses FileHandler if filename is set.
+    filename=None,                               # Регистрирует в stderr или добавляет в файл.
+    format='%(levelname)s:%(name)s:%(message)s', # Добавляет '%(asctime)s' для локальной даты и времени.
+    level=log.WARNING,                           # Отбрасывает сообщения с более низким приоритетом.
+    handlers=[log.StreamHandler(sys.stderr)]     # Использует FileHandler, если задано filename.
 )
 ```
 
 ```python
-<Formatter> = log.Formatter('<format>')           # Creates a Formatter.
-<Handler> = log.FileHandler(<path>, mode='a')     # Creates a Handler. Also `encoding=None`.
-<Handler>.setFormatter(<Formatter>)               # Adds Formatter to the Handler.
-<Handler>.setLevel(<int/str>)                     # Processes all messages by default.
-<Logger>.addHandler(<Handler>)                    # Adds Handler to the Logger.
-<Logger>.setLevel(<int/str>)                      # What is sent to its/ancestors' handlers.
-<Logger>.propagate = <bool>                       # Cuts off ancestors' handlers if False.
+<Formatter> = log.Formatter('<format>')       # Создает Formatter.
+<Handler> = log.FileHandler(<path>, mode='a') # Создает Handler. Также `encoding=None`.
+<Handler>.setFormatter(<Formatter>)           # Добавляет Formatter к Handler.
+<Handler>.setLevel(<int/str>)                 # Обрабатывает все сообщения по умолчанию.
+<Logger>.addHandler(<Handler>)                # Добавляет Handler к Logger.
+<Logger>.setLevel(<int/str>)                  # Что отправляется обработчикам его/предков.
+<Logger>.propagate = <bool>                   # Отключает обработчики предков, если False.
 ```
-* **Parent logger can be specified by naming the child logger `'<parent>.<name>'`.**
-* **If logger doesn't have a set level, it inherits it from the first ancestor that does.**
-* **Formatter also accepts: pathname, filename, funcName, lineno, thread and process.**
-* **RotatingFileHandler creates and deletes files based on 'maxBytes', 'backupCount' args.**
-* **An object with `'filter(<LogRecord>)'` method (or the method itself) can be added to loggers and handlers via addFilter(). Message is dropped if filter() returns a false value.**
 
 #### Creates a logger that writes all messages to a file and sends them to the root's handler that prints warnings or higher:
 ```python
@@ -2129,31 +2119,30 @@ CRITICAL:my_module:Running out of disk space.
 Introspection
 -------------
 ```python
-<list> = dir()                      # Local names of variables, functions, classes and modules.
-<dict> = vars()                     # Dict of local names and their objects. Also locals().
-<dict> = globals()                  # Dict of global names and their objects, e.g. __builtin__.
+<list> = dir()        # Локальные имена переменных, функций, классов и модулей.
+<dict> = vars()       # Dict локальных имен и их объектов. Также locals().
+<dict> = globals()    # Dict глобальных имен и их объектов, например __builtin__.
 ```
 
 ```python
-<list> = dir(<obj>)                 # Returns names of object's attributes (including methods).
-<dict> = vars(<obj>)                # Returns dict of writable attributes. Also <obj>.__dict__.
-<bool> = hasattr(<obj>, '<name>')   # Checks if object possesses attribute with passed name.
-value  = getattr(<obj>, '<name>')   # Returns object's attribute or raises AttributeError.
-setattr(<obj>, '<name>', value)     # Sets attribute. Only works on objects with __dict__ attr.
-delattr(<obj>, '<name>')            # Deletes attribute from __dict__. Also `del <obj>.<name>`.
+<list> = dir(<obj>)                # Возвращает имена атрибутов объекта (включая методы).
+<dict> = vars(<obj>)               # Возвращает словарь записываемых атрибутов. Также <obj>.__dict__.
+<bool> = hasattr(<obj>, '<name>')  # Проверяет, обладает ли объект атрибутом с переданным именем.
+value = getattr(<obj>, '<name>')   # Возвращает атрибут объекта или вызывает AttributeError.
+setattr(<obj>, '<name>', value)    # Устанавливает атрибут. Работает только с объектами с атрибутом __dict__.
+delattr(<obj>, '<name>')           # Удаляет атрибут из __dict__. Также `del <obj>.<name>`.
 ```
 
 ```python
-<Sig>  = inspect.signature(<func>)  # Returns a Signature object of the passed function.
-<dict> = <Sig>.parameters           # Returns dict of Parameters. Also <Sig>.return_annotation.
-<memb> = <Param>.kind               # Returns ParameterKind member (Parameter.KEYWORD_ONLY, …).
-<type> = <Param>.annotation         # Returns Parameter.empty if missing. Also <Param>.default.
+<Sig> = inspect.signature(<func>)  # Возвращает объект Signature переданной функции.
+<dict> = <Sig>.parameters          # Возвращает словарь параметров. Также <Sig>.return_annotation.
+<memb> = <Param>.kind              # Возвращает член ParameterKind (Parameter.KEYWORD_ONLY, …).
+<type> = <Param>.annotation        # Возвращает Parameter.empty, если отсутствует. Также <Param>.default.
 ```
 
 
 Threading
 ---------
-**CPython interpreter can only run a single thread at a time. Using multiple threads won't result in a faster execution, unless at least one of the threads contains an I/O operation.**
 ```python
 from threading import Thread, Lock, RLock, Semaphore, Event, Barrier
 from concurrent.futures import ThreadPoolExecutor, as_completed
