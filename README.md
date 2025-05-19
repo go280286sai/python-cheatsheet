@@ -1710,8 +1710,8 @@ Pickle
 
 ```python
 import pickle
-<bytes>  = pickle.dumps(<object>)   # Converts object to bytes object.
-<object> = pickle.loads(<bytes>)    # Converts bytes object to object.
+<bytes> = pickle.dumps(<object>) # Преобразует объект в объект байтов.
+<object> = pickle.loads(<bytes>) # Преобразует объект байтов в объект.
 ```
 
 ### Read Object from Pickle File
@@ -1731,7 +1731,6 @@ def write_to_pickle_file(filename, an_object):
 
 CSV
 ---
-**Text file format for storing spreadsheets.**
 
 ```python
 import csv
@@ -1739,16 +1738,16 @@ import csv
 
 ### Read
 ```python
-<reader> = csv.reader(<file>)       # Also: `dialect='excel', delimiter=','`.
-<list>   = next(<reader>)           # Returns next row as a list of strings.
-<list>   = list(<reader>)           # Returns a list of remaining rows.
+<reader> = csv.reader(<file>) # Также: `dialect='excel', delimiter=','`.
+<list> = next(<reader>)       # Возвращает следующую строку в виде списка строк.
+<list> = list(<reader>)       # Возвращает список оставшихся строк.
 ```
 
 ### Write
 ```python
-<writer> = csv.writer(<file>)       # Also: `dialect='excel', delimiter=','`.
-<writer>.writerow(<collection>)     # Encodes objects using `str(<el>)`.
-<writer>.writerows(<coll_of_coll>)  # Appends multiple rows.
+<writer> = csv.writer(<file>)      # Также: `dialect='excel', delimiter=','`.
+<writer>.writerow(<collection>)    # Кодирует объекты с помощью `str(<el>)`.
+<writer>.writerows(<coll_of_coll>) # Добавляет несколько строк.
 ```
 
 ### Dialects
@@ -1786,35 +1785,35 @@ SQLite
 ------
 ```python
 import sqlite3
-<conn> = sqlite3.connect(<path>)               # Opens existing or new file. Also ':memory:'.
-<conn>.close()                                 # Closes connection. Discards uncommitted data.
+<conn> = sqlite3.connect(<path>)  # Открывает существующий или новый файл. Также ':memory:'.
+<conn>.close()                    # Закрывает соединение. Отбрасывает неподтвержденные данные.
 ```
 
 ### Read
 ```python
-<cursor> = <conn>.execute('<query>')           # Can raise a subclass of sqlite3.Error.
-<tuple>  = <cursor>.fetchone()                 # Returns next row. Also next(<cursor>).
-<list>   = <cursor>.fetchall()                 # Returns remaining rows. Also list(<cursor>).
+<cursor> = <conn>.execute('<query>') # Может вызвать подкласс sqlite3.Error.
+<tuple> = <cursor>.fetchone()        # Возвращает следующую строку. Также next(<cursor>).
+<list> = <cursor>.fetchall()         # Возвращает оставшиеся строки. Также list(<cursor>).
 ```
 
 ### Write
 ```python
-<conn>.execute('<query>')                      # Can raise a subclass of sqlite3.Error.
-<conn>.commit()                                # Saves all changes since the last commit.
-<conn>.rollback()                              # Discards all changes since the last commit.
+<conn>.execute('<query>')         # Может вызвать подкласс sqlite3.Error.
+<conn>.commit()                   # Сохраняет все изменения с момента последнего коммита.
+<conn>.rollback()                 # Отменяет все изменения с момента последнего коммита.
 ```
 
 #### Or:
 ```python
-with <conn>:                                   # Exits the block with commit() or rollback(),
-    <conn>.execute('<query>')                  # depending on whether any exception occurred.
+with <conn>:                                   # Выходит из блока с помощью commit() или rollback(),
+    <conn>.execute('<query>')                  # в зависимости от того, произошло ли какое-либо исключение.
 ```
 
 ### Placeholders
 ```python
-<conn>.execute('<query>', <list/tuple>)        # Replaces every question mark with an item.
-<conn>.execute('<query>', <dict/namedtuple>)   # Replaces every :<key> with value.
-<conn>.executemany('<query>', <coll_of_coll>)  # Runs execute() multiple times.
+<conn>.execute('<query>', <list/tuple>)        # Заменяет каждый вопросительный знак на элемент.
+<conn>.execute('<query>', <dict/namedtuple>)   # Заменяет каждый :<key> на значение.
+<conn>.executemany('<query>', <coll_of_coll>)  # Запускает execute() несколько раз.
 ```
 
 ### Example
@@ -1833,10 +1832,10 @@ with <conn>:                                   # Exits the block with commit() o
 ```python
 # $ pip3 install sqlalchemy
 from sqlalchemy import create_engine, text
-<engine> = create_engine('<url>')              # Url: 'dialect://user:password@host/dbname'.
-<conn>   = <engine>.connect()                  # Creates a connection. Also <conn>.close().
-<cursor> = <conn>.execute(text('<query>'), …)  # `<dict>`. Replaces every :<key> with value.
-with <conn>.begin(): ...                       # Exits the block with commit or rollback.
+<engine> = create_engine('<url>')             
+<conn>   = <engine>.connect()                
+<cursor> = <conn>.execute(text('<query>'), …) 
+with <conn>.begin(): ...                  
 ```
 
 ```text
@@ -1856,26 +1855,26 @@ Bytes
 **A bytes object is an immutable sequence of single bytes. Mutable version is called bytearray.**
 
 ```python
-<bytes> = b'<str>'                       # Only accepts ASCII characters and \x00-\xff.
-<int>   = <bytes>[index]                 # Returns an int in range from 0 to 255.
-<bytes> = <bytes>[<slice>]               # Returns bytes even if it has only one element.
-<bytes> = <bytes>.join(<coll_of_bytes>)  # Joins elements using bytes as a separator.
+<bytes> = b'<str>'                      # Принимает только символы ASCII и \x00-\xff.
+<int> = <bytes>[index]                  # Возвращает целое число в диапазоне от 0 до 255.
+<bytes> = <bytes>[<slice>]              # Возвращает байты, даже если в нем только один элемент.
+<bytes> = <bytes>.join(<coll_of_bytes>) # Объединяет элементы, используя байты в качестве разделителя.
 ```
 
 ### Encode
 ```python
-<bytes> = bytes(<coll_of_ints>)          # Ints must be in range from 0 to 255.
-<bytes> = bytes(<str>, 'utf-8')          # Encodes the string. Also <str>.encode().
-<bytes> = bytes.fromhex('<hex>')         # Hex pairs can be separated by whitespaces.
-<bytes> = <int>.to_bytes(n_bytes, …)     # `byteorder='big/little', signed=False`.
+<bytes> = bytes(<coll_of_ints>)        # Целые числа должны быть в диапазоне от 0 до 255.
+<bytes> = bytes(<str>, 'utf-8')        # Кодирует строку. Также <str>.encode().
+<bytes> = bytes.fromhex('<hex>')       # Шестнадцатеричные пары могут быть разделены пробелами.
+<bytes> = <int>.to_bytes(n_bytes, …)   # `byteorder='big/little', signed=False`.
 ```
 
 ### Decode
 ```python
-<list>  = list(<bytes>)                  # Returns ints in range from 0 to 255.
-<str>   = str(<bytes>, 'utf-8')          # Returns a string. Also <bytes>.decode().
-<str>   = <bytes>.hex()                  # Returns hex pairs. Accepts `sep=<str>`.
-<int>   = int.from_bytes(<bytes>, …)     # `byteorder='big/little', signed=False`.
+<list> = list(<bytes>)             # Возвращает целые числа в диапазоне от 0 до 255.
+<str> = str(<bytes>, 'utf-8')      # Возвращает строку. Также <bytes>.decode().
+<str> = <bytes>.hex()              # Возвращает шестнадцатеричные пары. Принимает `sep=<str>`.
+<int> = int.from_bytes(<bytes>, …) # `byteorder='big/little', signed=False`.
 ```
 
 ### Read Bytes from File
@@ -2198,97 +2197,33 @@ with <lock>:                                   # Входит в блок, вы�
 ```
 Coroutines
 ----------
-* **Coroutines have a lot in common with threads, but unlike threads, they only give up control when they call another coroutine and they don’t use as much memory.**
-* **Coroutine definition starts with `'async'` and its call with `'await'`.**
-* **Use `'asyncio.run(<coroutine>)'` to start the first/main coroutine.**
 
 ```python
 import asyncio as aio
 ```
 
 ```python
-<coro> = <async_function>(<args>)          # Creates a coroutine by calling async def function.
-<obj>  = await <coroutine>                 # Starts the coroutine and returns its result.
-<task> = aio.create_task(<coroutine>)      # Schedules the coroutine for execution.
-<obj>  = await <task>                      # Returns coroutine's result. Also <task>.cancel().
+<coro> = <async_function>(<args>)      # Создает сопрограмму, вызывая функцию async def.
+<obj> = await <coroutine>              # Запускает сопрограмму и возвращает ее результат.
+<task> = aio.create_task(<coroutine>)  # Планирует сопрограмму для выполнения.
+<obj> = await <task>                   # Возвращает результат сопрограммы. Также <task>.cancel().
 ```
 
 ```python
-<coro> = aio.gather(<coro/task>, ...)      # Schedules coros. Returns list of results on await.
-<coro> = aio.wait(<tasks>, return_when=…)  # `'ALL/FIRST_COMPLETED'`. Returns (done, pending).
-<iter> = aio.as_completed(<coros/tasks>)   # Iter of coros that return next result on await.
+<coro> = aio.gather(<coro/task>, ...)     # Планирует сопрограммы. Возвращает список результатов при ожидании.
+<coro> = aio.wait(<tasks>, return_when=…) # `'ALL/FIRST_COMPLETED'`. Возвращает (выполнено, ожидание).
+<iter> = aio.as_completed(<coros/tasks>)  # Итерация сопрограмм, которые возвращают следующий результат при ожидании.
 ```
-
-#### Runs a terminal game where you control an asterisk that must avoid numbers:
-```python
-import asyncio, collections, curses, curses.textpad, enum, random
-
-P = collections.namedtuple('P', 'x y')     # Position
-D = enum.Enum('D', 'n e s w')              # Direction
-W, H = 15, 7                               # Width, Height
-
-def main(screen):
-    curses.curs_set(0)                     # Makes cursor invisible.
-    screen.nodelay(True)                   # Makes getch() non-blocking.
-    asyncio.run(main_coroutine(screen))    # Starts running asyncio code.
-
-async def main_coroutine(screen):
-    moves = asyncio.Queue()
-    state = {'*': P(0, 0)} | {id_: P(W//2, H//2) for id_ in range(10)}
-    ai    = [random_controller(id_, moves) for id_ in range(10)]
-    mvc   = [human_controller(screen, moves), model(moves, state), view(state, screen)]
-    tasks = [asyncio.create_task(coro) for coro in ai + mvc]
-    await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
-
-async def random_controller(id_, moves):
-    while True:
-        d = random.choice(list(D))
-        moves.put_nowait((id_, d))
-        await asyncio.sleep(random.triangular(0.01, 0.65))
-
-async def human_controller(screen, moves):
-    while True:
-        key_mappings = {258: D.s, 259: D.n, 260: D.w, 261: D.e}
-        if d := key_mappings.get(screen.getch()):
-            moves.put_nowait(('*', d))
-        await asyncio.sleep(0.005)
-
-async def model(moves, state):
-    while state['*'] not in (state[id_] for id_ in range(10)):
-        id_, d = await moves.get()
-        deltas = {D.n: P(0, -1), D.e: P(1, 0), D.s: P(0, 1), D.w: P(-1, 0)}
-        state[id_] = P((state[id_].x + deltas[d].x) % W, (state[id_].y + deltas[d].y) % H)
-
-async def view(state, screen):
-    offset = P(curses.COLS//2 - W//2, curses.LINES//2 - H//2)
-    while True:
-        screen.erase()
-        curses.textpad.rectangle(screen, offset.y-1, offset.x-1, offset.y+H, offset.x+W)
-        for id_, p in state.items():
-            screen.addstr(offset.y + (p.y - state['*'].y + H//2) % H,
-                          offset.x + (p.x - state['*'].x + W//2) % W, str(id_))
-        screen.refresh()
-        await asyncio.sleep(0.005)
-
-if __name__ == '__main__':
-    curses.wrapper(main)
-```
-<br>
-
-
-Libraries
-=========
 
 Progress Bar
 ------------
 ```python
 # $ pip3 install tqdm
->>> import tqdm, time
->>> for el in tqdm.tqdm([1, 2, 3], desc='Processing'):
-...     time.sleep(1)
+import tqdm, time
+for el in tqdm.tqdm([1, 2, 3], desc='Processing'):
+    time.sleep(1)
 Processing: 100%|████████████████████| 3/3 [00:03<00:00,  1.00s/it]
 ```
-
 
 Plot
 ----
@@ -2296,11 +2231,11 @@ Plot
 # $ pip3 install matplotlib
 import matplotlib.pyplot as plt
 
-plt.plot/bar/scatter(x_data, y_data [, label=<str>])  # Also plt.plot(y_data).
-plt.legend()                                          # Adds a legend.
-plt.title/xlabel/ylabel(<str>)                        # Adds a title or label.
-plt.show()                                            # Also plt.savefig(<path>).
-plt.clf()                                             # Clears the plot.
+plt.plot/bar/scatter(x_data, y_data [, label=<str>]) # Также plt.plot(y_data).
+plt.legend()                                         # Добавляет легенду.
+plt.title/xlabel/ylabel(<str>)                       # Добавляет заголовок или метку.
+plt.show()                                           # Также plt.savefig(<path>).
+plt.clf()                                            # Очищает график.
 ```
 
 
@@ -2313,38 +2248,6 @@ import csv, tabulate
 with open('test.csv', encoding='utf-8', newline='') as file:
     rows = list(csv.reader(file))
 print(tabulate.tabulate(rows, headers='firstrow'))
-```
-
-
-Console App
------------
-#### Runs a basic file explorer in the console:
-```python
-# $ pip3 install windows-curses
-import curses, os
-from curses import A_REVERSE, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT
-
-def main(screen):
-    ch, first, selected, paths = 0, 0, 0, os.listdir()
-    while ch != ord('q'):
-        height, width = screen.getmaxyx()
-        screen.erase()
-        for y, filename in enumerate(paths[first : first+height]):
-            color = A_REVERSE if filename == paths[selected] else 0
-            screen.addnstr(y, 0, filename, width-1, color)
-        ch = screen.getch()
-        selected -= (ch == KEY_UP) and (selected > 0)
-        selected += (ch == KEY_DOWN) and (selected < len(paths)-1)
-        first -= (first > selected)
-        first += (first < selected-(height-1))
-        if ch in [KEY_LEFT, KEY_RIGHT, ord('\n')]:
-            new_dir = '..' if ch == KEY_LEFT else paths[selected]
-            if os.path.isdir(new_dir):
-                os.chdir(new_dir)
-                first, selected, paths = 0, 0, os.listdir()
-
-if __name__ == '__main__':
-    curses.wrapper(main)
 ```
 
 
@@ -2425,7 +2328,6 @@ from selenium import webdriver
 
 Web App
 -------
-**Flask is a micro web framework/server. If you just want to open a html file in a web browser use `'webbrowser.open(<path>)'` instead.**
 ```python
 # $ pip3 install flask
 import flask as fl
@@ -2544,58 +2446,51 @@ import numpy as np
 ```
 
 ```python
-<array> = np.array(<list/list_of_lists/…>)              # Returns a 1d/2d/… NumPy array.
-<array> = np.zeros/ones/empty(<shape>)                  # Also np.full(<shape>, <el>).
-<array> = np.arange(from_inc, to_exc, ±step)            # Also np.linspace(start, stop, len).
-<array> = np.random.randint(from_inc, to_exc, <shape>)  # Also np.random.random(<shape>).
+<array> = np.array(<list/list_of_lists/…>)             # Возвращает 1d/2d/… массив NumPy.
+<array> = np.zeros/ones/empty(<shape>)                 # Также np.full(<shape>, <el>).
+<array> = np.arange(from_inc, to_exc, ±step)           # Также np.linspace(start, stop, len).
+<array> = np.random.randint(from_inc, to_exc, <shape>) # Также np.random.random(<shape>).
 ```
 
 ```python
-<view>  = <array>.reshape(<shape>)                      # Also `<array>.shape = <shape>`.
-<array> = <array>.flatten()                             # Also `<view> = <array>.ravel()`.
-<view>  = <array>.transpose()                           # Or: <array>.T
+<view> = <array>.reshape(<shape>)      # Также `<array>.shape = <shape>`.
+<array> = <array>.flatten()            # Также `<view> = <array>.ravel()`.
+<view> = <array>.transpose()           # Или: <array>.T
 ```
 
 ```python
-<array> = np.copy/abs/sqrt/log/int64(<array>)           # Returns new array of the same shape.
-<array> = <array>.sum/max/mean/argmax/all(axis)         # Aggregates specified dimension.
-<array> = np.apply_along_axis(<func>, axis, <array>)    # Func can return a scalar or array.
+<array> = np.copy/abs/sqrt/log/int64(<array>)        # Возвращает новый массив той же формы.
+<array> = <array>.sum/max/mean/argmax/all(axis)      # Агрегирует указанное измерение.
+<array> = np.apply_along_axis(<func>, axis, <array>) # Func может возвращать скаляр или массив.
 ```
 
 ```python
-<array> = np.concatenate(<list_of_arrays>, axis=0)      # Links arrays along first axis (rows).
-<array> = np.vstack/column_stack(<list_of_arrays>)      # Treats 1d arrays as rows or columns.
-<array> = np.tile/repeat(<array>, <int/list> [, axis])  # Tiles array or repeats its elements.
+<array> = np.concatenate(<list_of_arrays>, axis=0)      # Связывает массивы вдоль первой оси (строки).
+<array> = np.vstack/column_stack(<list_of_arrays>)      # Обрабатывает одномерные массивы как строки или столбцы.
+<array> = np.tile/repeat(<array>, <int/list> [, axis])  # Разбивает массив на плитки или повторяет его элементы.
 ```
-* **Shape is a tuple of dimension sizes. A 100x50 RGB image has shape (50, 100, 3).**
-* **Axis is an index of a dimension. Leftmost dimension has index 0. Summing the RGB image along axis 2 will return a greyscale image with shape (50, 100).**
 
 ### Indexing
-```perl
+```python
 <el>       = <2d>[row_index, col_index]                 # Or: <3d>[<int>, <int>, <int>]
 <1d_view>  = <2d>[row_index]                            # Or: <3d>[<int>, <int>, <slice>]
 <1d_view>  = <2d>[:, col_index]                         # Or: <3d>[<int>, <slice>, <int>]
 <2d_view>  = <2d>[from:to_row_i, from:to_col_i]         # Or: <3d>[<int>, <slice>, <slice>]
 ```
 
-```perl
+```python
 <1d_array> = <2d>[row_indices, col_indices]             # Or: <3d>[<int/1d>, <1d>, <1d>]
 <2d_array> = <2d>[row_indices]                          # Or: <3d>[<int/1d>, <1d>, <slice>]
 <2d_array> = <2d>[:, col_indices]                       # Or: <3d>[<int/1d>, <slice>, <1d>]
 <2d_array> = <2d>[np.ix_(row_indices, col_indices)]     # Or: <3d>[<int/1d/2d>, <2d>, <2d>]
 ```
 
-```perl
+```python
 <2d_bools> = <2d> > <el/1d/2d>                          # 1d object must have size of a row.
 <1/2d_arr> = <2d>[<2d/1d_bools>]                        # 1d_bools must have size of a column.
 ```
-* **`':'` returns a slice of all dimension's indices. Omitted dimensions default to `':'`.**
-* **Python converts `'obj[i, j]'` to `'obj[(i, j)]'`. This makes `'<2d>[row_i, col_i]'` and `'<2d>[row_indices]'` indistinguishable to NumPy if tuple of two indices is passed!**
-* **`'ix_([1, 2], [3, 4])'` returns `'[[1], [2]]'` and `'[[3, 4]]'`. Due to broadcasting rules, this is the same as using `'[[1, 1], [2, 2]]'` and `'[[3, 4], [3, 4]]'`.**
-* **Any value that is broadcastable to the indexed shape can be assigned to the selection.**
 
 ### Broadcasting
-**A set of rules by which NumPy functions operate on arrays of different shapes.**
 ```python
 left  = np.array([0.1,  0.6,  0.8])                     # `left.shape  == (3,)`
 right = np.array([[0.1], [0.6], [0.8]])                 # `right.shape == (3, 1)`
@@ -2650,37 +2545,36 @@ from PIL import Image
 ```
 
 ```python
-<Image> = Image.new('<mode>', (width, height))  # Creates new image. Also `color=<int/tuple>`.
-<Image> = Image.open(<path>)                    # Identifies format based on file's contents.
-<Image> = <Image>.convert('<mode>')             # Converts image to the new mode (see Modes).
-<Image>.save(<path>)                            # Selects format based on extension (PNG/JPG…).
-<Image>.show()                                  # Displays image in default preview app.
+<Image> = Image.new('<mode>', (width, height))    # Создает новое изображение. Также `color=<int/tuple>`.
+<Image> = Image.open(<path>)                      # Определяет формат на основе содержимого файла.
+<Image> = <Image>.convert('<mode>')               # Преобразует изображение в новый режим (см. Режимы).
+<Image>.save(<path>)                              # Выбирает формат на основе расширения (PNG/JPG…).
+<Image>.show()                                    # Отображает изображение в приложении предварительного просмотра по умолчанию.
 ```
 
 ```python
-<int/tup> = <Image>.getpixel((x, y))            # Returns pixel's value (its color).
-<ImgCore> = <Image>.getdata()                   # Returns a flattened view of pixel values.
-<Image>.putpixel((x, y), <int/tuple>)           # Updates pixel's value. Clips passed int/s.
-<Image>.putdata(<list/ImgCore>)                 # Updates pixels with a copy of the sequence.
-<Image>.paste(<Image>, (x, y))                  # Draws passed image at the specified location.
+<int/tup> = <Image>.getpixel((x, y))    # Возвращает значение пикселя (его цвет).
+<ImgCore> = <Image>.getdata()           # Возвращает сглаженное представление значений пикселей.
+<Image>.putpixel((x, y), <int/tuple>)   # Обновляет значение пикселя. Обрезает переданные int/s.
+<Image>.putdata(<list/ImgCore>)         # Обновляет пиксели копией последовательности.
+<Image>.paste(<Image>, (x, y))          # Рисует переданное изображение в указанном месте.
 ```
 
 ```python
-<Image> = <Image>.filter(<Filter>)              # Use ImageFilter.<name>(<args>) for Filter.
-<Image> = <Enhance>.enhance(<float>)            # Use ImageEnhance.<name>(<Image>) for Enhance.
+<Image> = <Image>.filter(<Filter>)    # Используйте ImageFilter.<name>(<args>) для фильтра.
+<Image> = <Enhance>.enhance(<float>)  # Используйте ImageEnhance.<name>(<Image>) для улучшения.
 ```
 
 ```python
-<array> = np.array(<Image>)                     # Creates a 2d/3d NumPy array from the image.
-<Image> = Image.fromarray(np.uint8(<array>))    # Use <array>.clip(0, 255) to clip the values.
+<array> = np.array(<Image>)                  # Создает 2d/3d массив NumPy из изображения.
+<Image> = Image.fromarray(np.uint8(<array>)) # Используйте <array>.clip(0, 255) для обрезки значений.
 ```
 
 ### Modes
-* **`'L'` - Lightness (greyscale image). Each pixel is an int between 0 and 255.**
-* **`'RGB'` - Red, green, blue (true color image). Each pixel is a tuple of three ints.**
-* **`'RGBA'` - RGB with alpha. Low alpha (i.e. forth int) makes pixel more transparent.**
-* **`'HSV'` - Hue, saturation, value. Three ints representing color in HSV color space.**
-
+* **`'L'`    - Яркость (изображение в оттенках серого). Каждый пиксель - это целое число от 0 до 255.**
+* **`'RGB'`  - Красный, зеленый, синий (изображение в истинном цвете). Каждый пиксель - это кортеж из трех целых чисел.**
+* **`'RGBA'` - RGB с альфа-каналом. Низкий альфа-канал (т. е. четвертый целочисленный) делает пиксель более прозрачным.**
+* **`'HSV'`  - Оттенок, насыщенность, значение. Три целых числа, представляющие цвет в цветовом пространстве HSV.**
 
 ### Examples
 #### Creates a PNG image of a rainbow gradient:
@@ -2748,26 +2642,22 @@ import wave
 ```
 
 ```python
-<Wave>  = wave.open('<path>')         # Opens the WAV file for reading.
-<int>   = <Wave>.getframerate()       # Returns number of frames per second.
-<int>   = <Wave>.getnchannels()       # Returns number of samples per frame.
-<int>   = <Wave>.getsampwidth()       # Returns number of bytes per sample.
-<tuple> = <Wave>.getparams()          # Returns namedtuple of all parameters.
-<bytes> = <Wave>.readframes(nframes)  # Returns all frames if -1 is passed.
+<Wave> = wave.open('<path>')         # Открывает WAV-файл для чтения.
+<int> = <Wave>.getframerate()        # Возвращает количество кадров в секунду.
+<int> = <Wave>.getnchannels()        # Возвращает количество выборок на кадр.
+<int> = <Wave>.getsampwidth()        # Возвращает количество байтов на выборку.
+<tuple> = <Wave>.getparams()         # Возвращает именованный кортеж всех параметров.
+<bytes> = <Wave>.readframes(nframes) # Возвращает все кадры, если передано -1.
 ```
 
 ```python
-<Wave> = wave.open('<path>', 'wb')    # Creates/truncates a file for writing.
-<Wave>.setframerate(<int>)            # Pass 44100 for CD, 48000 for video.
-<Wave>.setnchannels(<int>)            # Pass 1 for mono, 2 for stereo.
-<Wave>.setsampwidth(<int>)            # Pass 2 for CD, 3 for hi-res sound.
-<Wave>.setparams(<tuple>)             # Tuple must contain all parameters.
-<Wave>.writeframes(<bytes>)           # Appends frames to the file.
+<Wave> = wave.open('<path>', 'wb')     # Создает/обрезает файл для записи.
+<Wave>.setframerate(<int>)             # Проход 44100 для CD, 48000 для видео.
+<Wave>.setnchannels(<int>)             # Проход 1 для моно, 2 для стерео.
+<Wave>.setsampwidth(<int>)             # Проход 2 для CD, 3 для звука высокого разрешения.
+<Wave>.setparams(<tuple>)              # Кортеж должен содержать все параметры.
+<Wave>.writeframes(<bytes>)            # Добавляет кадры в файл.
 ```
-* **Bytes object contains a sequence of frames, each consisting of one or more samples.**
-* **In a stereo signal, the first sample of a frame belongs to the left channel.**
-* **Each sample consists of one or more bytes that, when converted to an integer, indicate the displacement of a speaker membrane at a given moment.**
-* **If sample width is one byte, then the integer should be encoded unsigned. For all other sizes, the integer should be encoded signed with little-endian byte order.**
 
 ### Sample Values
 ```text
@@ -2865,167 +2755,8 @@ play_notes('83♩,81♪,,83♪,,78♪,,74♪,,78♪,,71♪,,,,83♪,,81♪,,83�
            '83♩,85♪,,86♪,,85♪,,86♪,,83♪,,85♩,83♪,,85♪,,81♪,,83♪,,81♪,,83♪,,79♪,,83♪,,,,')
 ```
 
-
-Pygame
-------
-#### Opes a window and draws a square that can be moved with arrow keys:
-```python
-# $ pip3 install pygame
-import pygame as pg
-
-pg.init()
-screen = pg.display.set_mode((500, 500))
-rect = pg.Rect(240, 240, 20, 20)
-while not pg.event.get(pg.QUIT):
-    deltas = {pg.K_UP: (0, -1), pg.K_RIGHT: (1, 0), pg.K_DOWN: (0, 1), pg.K_LEFT: (-1, 0)}
-    for event in pg.event.get(pg.KEYDOWN):
-        x, y = deltas.get(event.key, (0, 0))
-        rect = rect.move((x*20, y*20))
-    screen.fill(pg.Color('black'))
-    pg.draw.rect(screen, pg.Color('white'), rect)
-    pg.display.flip()
-pg.quit()
-```
-
-### Rect
-**Object for storing rectangular coordinates.**
-```python
-<Rect> = pg.Rect(x, y, width, height)           # Creates Rect object. Truncates passed floats.
-<int>  = <Rect>.x/y/centerx/centery/…           # `top/right/bottom/left`. Allows assignments.
-<tup.> = <Rect>.topleft/center/…                # `topright/bottomright/bottomleft`. Same.
-<Rect> = <Rect>.move((delta_x, delta_y))        # Use move_ip() to move in-place.
-```
-
-```python
-<bool> = <Rect>.collidepoint((x, y))            # Checks if rectangle contains the point.
-<bool> = <Rect>.colliderect(<Rect>)             # Checks if the two rectangles overlap.
-<int>  = <Rect>.collidelist(<list_of_Rect>)     # Returns index of first colliding Rect or -1.
-<list> = <Rect>.collidelistall(<list_of_Rect>)  # Returns indices of all colliding rectangles.
-```
-
-### Surface
-**Object for representing images.**
-```python
-<Surf> = pg.display.set_mode((width, height))   # Opens new window and returns its surface.
-<Surf> = pg.Surface((width, height))            # New RGB surface. RGBA if `flags=pg.SRCALPHA`.
-<Surf> = pg.image.load(<path/file>)             # Loads the image. Format depends on source.
-<Surf> = pg.surfarray.make_surface(<np_array>)  # Also `<np_arr> = surfarray.pixels3d(<Surf>)`.
-<Surf> = <Surf>.subsurface(<Rect>)              # Creates a new surface from the cutout.
-```
-
-```python
-<Surf>.fill(color)                              # Pass tuple of ints or pg.Color('<name/hex>').
-<Surf>.set_at((x, y), color)                    # Updates pixel. Also <Surf>.get_at((x, y)).
-<Surf>.blit(<Surf>, (x, y))                     # Draws passed surface at specified location.
-```
-
-```python
-from pygame.transform import scale, ...
-<Surf> = scale(<Surf>, (width, height))         # Returns scaled surface.
-<Surf> = rotate(<Surf>, anticlock_degrees)      # Returns rotated and scaled surface.
-<Surf> = flip(<Surf>, x_bool, y_bool)           # Returns flipped surface.
-```
-
-```python
-from pygame.draw import line, ...
-line(<Surf>, color, (x1, y1), (x2, y2), width)  # Draws a line to the surface.
-arc(<Surf>, color, <Rect>, from_rad, to_rad)    # Also ellipse(<Surf>, color, <Rect>, width=0).
-rect(<Surf>, color, <Rect>, width=0)            # Also polygon(<Surf>, color, points, width=0).
-```
-
-```python
-<Font> = pg.font.Font(<path/file>, size)        # Loads TTF file. Pass None for default font.
-<Surf> = <Font>.render(text, antialias, color)  # Accepts background color as fourth argument.
-```
-
-### Sound
-```python
-<Sound> = pg.mixer.Sound(<path/file/bytes>)     # WAV file or bytes/array of signed shorts.
-<Sound>.play/stop()                             # Also set_volume(<float>) and fadeout(msec).
-```
-
-### Basic Mario Brothers Example
-```python
-import collections, dataclasses, enum, io, itertools as it, pygame as pg, urllib.request
-from random import randint
-
-P = collections.namedtuple('P', 'x y')          # Position
-D = enum.Enum('D', 'n e s w')                   # Direction
-W, H, MAX_S = 50, 50, P(5, 10)                  # Width, Height, Max speed
-
-def main():
-    def get_screen():
-        pg.init()
-        return pg.display.set_mode((W*16, H*16))
-    def get_images():
-        url = 'https://gto76.github.io/python-cheatsheet/web/mario_bros.png'
-        img = pg.image.load(io.BytesIO(urllib.request.urlopen(url).read()))
-        return [img.subsurface(get_rect(x, 0)) for x in range(img.get_width() // 16)]
-    def get_mario():
-        Mario = dataclasses.make_dataclass('Mario', 'rect spd facing_left frame_cycle'.split())
-        return Mario(get_rect(1, 1), P(0, 0), False, it.cycle(range(3)))
-    def get_tiles():
-        border = [(x, y) for x in range(W) for y in range(H) if x in [0, W-1] or y in [0, H-1]]
-        platforms = [(randint(1, W-2), randint(2, H-2)) for _ in range(W*H // 10)]
-        return [get_rect(x, y) for x, y in border + platforms]
-    def get_rect(x, y):
-        return pg.Rect(x*16, y*16, 16, 16)
-    run(get_screen(), get_images(), get_mario(), get_tiles())
-
-def run(screen, images, mario, tiles):
-    clock = pg.time.Clock()
-    pressed = set()
-    while not pg.event.get(pg.QUIT):
-        clock.tick(28)
-        pressed |= {e.key for e in pg.event.get(pg.KEYDOWN)}
-        pressed -= {e.key for e in pg.event.get(pg.KEYUP)}
-        update_speed(mario, tiles, pressed)
-        update_position(mario, tiles)
-        draw(screen, images, mario, tiles)
-
-def update_speed(mario, tiles, pressed):
-    x, y = mario.spd
-    x += 2 * ((pg.K_RIGHT in pressed) - (pg.K_LEFT in pressed))
-    x += (x < 0) - (x > 0)
-    y += 1 if D.s not in get_boundaries(mario.rect, tiles) else (pg.K_UP in pressed) * -10
-    mario.spd = P(x=max(-MAX_S.x, min(MAX_S.x, x)), y=max(-MAX_S.y, min(MAX_S.y, y)))
-
-def update_position(mario, tiles):
-    x, y = mario.rect.topleft
-    n_steps = max(abs(s) for s in mario.spd)
-    for _ in range(n_steps):
-        mario.spd = stop_on_collision(mario.spd, get_boundaries(mario.rect, tiles))
-        x, y = x + (mario.spd.x / n_steps), y + (mario.spd.y / n_steps)
-        mario.rect.topleft = x, y
-
-def get_boundaries(rect, tiles):
-    deltas = {D.n: P(0, -1), D.e: P(1, 0), D.s: P(0, 1), D.w: P(-1, 0)}
-    return {d for d, delta in deltas.items() if rect.move(delta).collidelist(tiles) != -1}
-
-def stop_on_collision(spd, bounds):
-    return P(x=0 if (D.w in bounds and spd.x < 0) or (D.e in bounds and spd.x > 0) else spd.x,
-             y=0 if (D.n in bounds and spd.y < 0) or (D.s in bounds and spd.y > 0) else spd.y)
-
-def draw(screen, images, mario, tiles):
-    screen.fill((85, 168, 255))
-    mario.facing_left = mario.spd.x < 0 if mario.spd.x else mario.facing_left
-    is_airborne = D.s not in get_boundaries(mario.rect, tiles)
-    image_index = 4 if is_airborne else next(mario.frame_cycle) if mario.spd.x else 6
-    screen.blit(images[image_index + (mario.facing_left * 9)], mario.rect)
-    for t in tiles:
-        is_border = t.x in [0, (W-1)*16] or t.y in [0, (H-1)*16]
-        screen.blit(images[18 if is_border else 19], t)
-    pg.display.flip()
-
-if __name__ == '__main__':
-    main()
-```
-
-
 Pandas
 ------
-**Data analysis library. For examples see [Plotly](#plotly).**
-
 ```python
 # $ pip3 install pandas matplotlib
 import pandas as pd, matplotlib.pyplot as plt
@@ -3074,10 +2805,6 @@ Name: a, dtype: int64
 <S>.plot.line/area/bar/pie/hist()              # Generates a plot. Accepts `title=<str>`.
 plt.show()                                     # Displays the plot. Also plt.savefig(<path>).
 ```
-* **Use `'print(<S>.to_string())'` to print a Series that has more than 60 items.**
-* **Use `'<S>.index'` to get collection of keys and `'<S>.index = <coll>'` to update them.**
-* **Only pass a list or Series to loc/iloc because `'obj[x, y]'` is converted to `'obj[(x, y)]'` and `'<S>.loc[key_1, key_2]'` is how you retrieve a value from a multi-indexed Series.**
-* **Pandas uses NumPy types like `'np.int64'`. Series is converted to `'float64'` if we assign np.nan to any item. Use `'<S>.astype(<str/type>)'` to get converted Series.**
 
 #### Series — Aggregate, Transform, Map:
 ```python
@@ -3217,36 +2944,30 @@ c  6  7
 |                 |  b  2.0  2.0  |  b  2.0  2.0  |    b  2.0     |
 +-----------------+---------------+---------------+---------------+
 ```
-* **Listed methods process the columns unless they receive `'axis=1'`. Exceptions to this rule are `'<DF>.dropna()'`, `'<DF>.drop(row_key/s)'` and `'<DF>.rename(<dict/func>)'`.**
-* **Fifth result's columns are indexed with a multi-index. This means we need a tuple of column keys to specify a column: `'<DF>.loc[row_key, (col_key_1, col_key_2)]'`.**
 
 ### Multi-Index
 ```python
-<DF> = <DF>.loc[row_key_1]                     # Or: <DF>.xs(row_key_1)
-<DF> = <DF>.loc[:, (slice(None), col_key_2)]   # Or: <DF>.xs(col_key_2, axis=1, level=1)
-<DF> = <DF>.set_index(col_keys)                # Creates index from cols. Also `append=False`.
-<DF> = <DF>.pivot_table(index=col_key/s)       # `columns=key/s, values=key/s, aggfunc='mean'`.
-<S>  = <DF>.stack/unstack(level=-1)            # Combines col keys with row keys or vice versa.
+<DF> = <DF>.loc[row_key_1]                   # Или: <DF>.xs(row_key_1)
+<DF> = <DF>.loc[:, (slice(None), col_key_2)] # Или: <DF>.xs(col_key_2, axis=1, level=1)
+<DF> = <DF>.set_index(col_keys)              # Создает индекс из столбцов. Также `append=False`.
+<DF> = <DF>.pivot_table(index=col_key/s)     # `columns=key/s, values=key/s, aggfunc='mean'`.
+<S> = <DF>.stack/unstack(level=-1)           # Объединяет ключи столбцов с ключами строк или наоборот.
 ```
 
 ### File Formats
 ```python
-<S/DF> = pd.read_json/pickle(<path/url/file>)  # Also io.StringIO(<str>), io.BytesIO(<bytes>).
-<DF>   = pd.read_csv/excel(<path/url/file>)    # Also `header/index_col/dtype/usecols/…=<obj>`.
-<list> = pd.read_html(<path/url/file>)         # Raises ImportError if webpage has zero tables.
-<S/DF> = pd.read_parquet/feather/hdf(<path…>)  # Function read_hdf() accepts `key=<s/df_name>`.
-<DF>   = pd.read_sql('<table/query>', <conn>)  # Pass SQLite3/Alchemy connection. See #SQLite.
+<S/DF> = pd.read_json/pickle(<path/url/file>) # Также io.StringIO(<str>), io.BytesIO(<bytes>).
+<DF> = pd.read_csv/excel(<path/url/file>)     # Также `header/index_col/dtype/usecols/…=<obj>`.
+<list> = pd.read_html(<path/url/file>)        # Вызывает ImportError, если на веб-странице нет таблиц.
+<S/DF> = pd.read_parquet/feather/hdf(<path…>) # Функция read_hdf() принимает `key=<s/df_name>`.
+<DF> = pd.read_sql('<table/query>', <conn>)   # Передает соединение SQLite3/Alchemy. Смотрите #SQLite.
 ```
 
 ```python
-<DF>.to_json/csv/html/latex/parquet(<path>)    # Returns a string/bytes if path is omitted.
-<DF>.to_pickle/excel/feather/hdf(<path>)       # Method to_hdf() requires `key=<s/df_name>`.
-<DF>.to_sql('<table_name>', <connection>)      # Also `if_exists='fail/replace/append'`.
+<DF>.to_json/csv/html/latex/parquet(<path>) # Возвращает строку/байты, если путь не указан.
+<DF>.to_pickle/excel/feather/hdf(<path>)    # Метод to_hdf() требует `key=<s/df_name>`.
+<DF>.to_sql('<table_name>', <connection>)   # Также `if_exists='fail/replace/append'`.
 ```
-* **`'$ pip3 install "pandas[excel]" odfpy lxml pyarrow'` installs dependencies.**
-* **Csv functions use the same dialect as standard library's csv module (e.g. `'sep=","'`).**
-* **Read\_csv() only parses dates of columns that are listed in 'parse\_dates'. It automatically tries to detect the format, but it can be helped with 'date\_format' or 'dayfirst' arguments.**
-* **We get a dataframe with DatetimeIndex if 'parse_dates' argument includes 'index\_col'. Its `'resample("y/m/d/h")'` method returns Resampler object that is similar to GroupBy.**
 
 ### GroupBy
 **Object that groups together rows of a dataframe based on the value of the passed column.**
@@ -3311,106 +3032,52 @@ import plotly.express as px, pandas as pd
 <Fig> = px.histogram(<DF>, x=col_key)                 # Also `nbins=<int>`.
 ```
 
-#### Displays a line chart of total coronavirus deaths per million grouped by continent:
-
-![Covid Deaths](web/covid_deaths.png)
-<div id="2a950764-39fc-416d-97fe-0a6226a3095f" class="plotly-graph-div" style="height:312px; width:914px;"></div>
-
-```python
-covid = pd.read_csv('https://raw.githubusercontent.com/owid/covid-19-data/8dde8ca49b'
-                    '6e648c17dd420b2726ca0779402651/public/data/owid-covid-data.csv',
-                    usecols=['iso_code', 'date', 'population', 'total_deaths'])
-continents = pd.read_csv('https://gto76.github.io/python-cheatsheet/web/continents.csv',
-                         usecols=['Three_Letter_Country_Code', 'Continent_Name'])
-df = pd.merge(covid, continents, left_on='iso_code', right_on='Three_Letter_Country_Code')
-df = df.groupby(['Continent_Name', 'date']).sum().reset_index()
-df['Total Deaths per Million'] = df.total_deaths * 1e6 / df.population
-df = df[df.date > '2020-03-14']
-df = df.rename({'date': 'Date', 'Continent_Name': 'Continent'}, axis='columns')
-px.line(df, x='Date', y='Total Deaths per Million', color='Continent').show()
-```
-
-#### Displays a multi-axis line chart of total coronavirus cases and changes in prices of Bitcoin, Dow Jones and gold:
-
-![Covid Cases](web/covid_cases.png)
-<div id="e23ccacc-a456-478b-b467-7282a2165921" class="plotly-graph-div" style="height:285px; width:935px;"></div>
-
-```python
-# $ pip3 install pandas lxml selenium plotly
-import pandas as pd, selenium.webdriver, io, plotly.graph_objects as go
-
-def main():
-    covid, (bitcoin, gold, dow) = get_covid_cases(), get_tickers()
-    df = wrangle_data(covid, bitcoin, gold, dow)
-    display_data(df)
-
-def get_covid_cases():
-    url = 'https://covid.ourworldindata.org/data/owid-covid-data.csv'
-    df = pd.read_csv(url, parse_dates=['date'])
-    df = df[df.location == 'World']
-    s = df.set_index('date').total_cases
-    return s.rename('Total Cases')
-
-def get_tickers():
-    with selenium.webdriver.Chrome() as driver:
-        symbols = {'Bitcoin': 'BTC-USD', 'Gold': 'GC=F', 'Dow Jones': '%5EDJI'}
-        for name, symbol in symbols.items():
-            yield get_ticker(driver, name, symbol)
-
-def get_ticker(driver, name, symbol):
-    url = f'https://finance.yahoo.com/quote/{symbol}/history/'
-    driver.get(url + '?period1=1579651200&period2=9999999999')
-    if buttons := driver.find_elements('xpath', '//button[@name="reject"]'):
-        buttons[0].click()
-    html = io.StringIO(driver.page_source)
-    dataframes = pd.read_html(html, parse_dates=['Date'])
-    s = dataframes[0].set_index('Date').Open
-    return s.rename(name)
-
-def wrangle_data(covid, bitcoin, gold, dow):
-    df = pd.concat([bitcoin, gold, dow], axis=1)  # Creates table by joining columns on dates.
-    df = df.sort_index().interpolate()            # Sorts rows by date and interpolates NaN-s.
-    df = df.loc['2020-02-23':'2021-12-20']        # Keeps rows between specified dates.
-    df = (df / df.iloc[0]) * 100                  # Calculates percentages relative to day 1.
-    df = df.join(covid)                           # Adds column with covid cases.
-    return df.sort_values(df.index[-1], axis=1)   # Sorts columns by last day's value.
-
-def display_data(df):
-    figure = go.Figure()
-    for col_name in reversed(df.columns):
-        yaxis = 'y1' if col_name == 'Total Cases' else 'y2'
-        trace = go.Scatter(x=df.index, y=df[col_name], yaxis=yaxis, name=col_name)
-        figure.add_trace(trace)
-    figure.update_layout(
-        width=944,
-        height=423,
-        yaxis1=dict(title='Total Cases', rangemode='tozero'),
-        yaxis2=dict(title='%', rangemode='tozero', overlaying='y', side='right'),
-        colorway=['#EF553B', '#636EFA', '#00CC96', '#FFA152'],
-        legend=dict(x=1.08)
-    )
-    figure.show()
-
-if __name__ == '__main__':
-    main()
-```
-
-
 Appendix
 --------
 ### Cython
-**Library that compiles Python-like code into C.**
 
 ```python
-# $ pip3 install cython
-import pyximport; pyximport.install()  # Module that runs imported Cython scripts.
-import <cython_script>                 # Script must be saved with '.pyx' extension.
-<cython_script>.main()                 # Main() isn't automatically executed.
+sudo apt-get install build-essential python3-dev
+pip install Cython
+python3.10 setup.py build_ext --inplace
+```
+```python
+import Cython.fib as fib
+import time
+
+start = time.time()
+print(fib.fib(9999))
+stop = time.time()
+res1 = stop - start
+
+
+def myfun(n):
+    total = 0
+    for i in range(n + 1):
+        total += i
+    return total
+
+
+start = time.time()
+print(myfun(9999))
+stop = time.time()
+res2 = stop - start
+print(res1, res2)
+print(res1<res2, res2-res1)
+print(fib.fib(9999) == myfun(9999))
+```
+
+Setup
+```python
+from distutils.core import setup
+from Cython.Build import cythonize
+
+setup(
+    ext_modules=cythonize("fib.pyx"),
+)
 ```
 
 #### Definitions:
-* **All `'cdef'` definitions are optional, but they contribute to the speed-up.**
-* **Also supports C pointers (via `'*'` and `'&'`), structs, unions and enums.**
 
 ```python
 cdef <ctype/type> <var_name> [= <obj>]
@@ -3428,7 +3095,7 @@ cdef class <class_name>:
 ### Virtual Environments
 **System for installing libraries directly into project's directory.**
 
-```perl
+```python
 $ python3 -m venv NAME      # Creates virtual environment in current directory.
 $ source NAME/bin/activate  # Activates it. On Windows run `NAME\Scripts\activate`.
 $ pip3 install LIBRARY      # Installs the library into active environment.
@@ -3436,41 +3103,3 @@ $ python3 FILE              # Runs the script in active environment. Also `./FIL
 $ deactivate                # Deactivates the active virtual environment.
 ```
 
-### Basic Script Template
-**Run the script with `'$ python3 FILE'` or `'$ chmod u+x FILE; ./FILE'`. To automatically start the debugger when uncaught exception occurs run `'$ python3 -m pdb -cc FILE'`.**
-```python
-#!/usr/bin/env python3
-#
-# Usage: .py
-#
-
-from sys import argv, exit
-from collections import defaultdict, namedtuple
-from dataclasses import make_dataclass
-from enum import Enum
-import functools as ft, itertools as it, operator as op, re
-
-
-def main():
-    pass
-
-
-###
-##  UTIL
-#
-
-def read_file(filename):
-    with open(filename, encoding='utf-8') as file:
-        return file.readlines()
-
-
-if __name__ == '__main__':
-    main()
-```
-
-
-Index
------
-* **Ctrl+F / ⌘F is usually sufficient.**
-* **Searching `'#<title>'` on the [webpage](https://gto76.github.io/python-cheatsheet/) will limit the search to the titles.**
-* **Click on the title's `'🔗'` to get a link to its section.**
