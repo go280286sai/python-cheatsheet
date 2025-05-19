@@ -2150,61 +2150,52 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 ### Thread
 ```python
-<Thread> = Thread(target=<function>)           # Use `args=<collection>` to set the arguments.
-<Thread>.start()                               # Starts the thread. Also <Thread>.is_alive().
-<Thread>.join()                                # Waits for the thread to finish executing.
+<Thread> = Thread(target=<function>)     # Используйте `args=<collection>` для установки аргументов.
+<Thread>.start()                         # Запускает поток. Также <Thread>.is_alive().
+<Thread>.join()                          # Ожидает завершения выполнения потока.
 ```
-* **Use `'kwargs=<dict>'` to pass keyword arguments to the function.**
-* **Use `'daemon=True'`, or the program won't be able to exit while the thread is alive.**
-
 ### Lock
 ```python
-<lock> = Lock/RLock()                          # RLock can only be released by acquirer.
-<lock>.acquire()                               # Waits for the lock to be available.
-<lock>.release()                               # Makes the lock available again.
+<lock> = Lock/RLock() # RLock может быть снят только приобретателем.
+<lock>.acquire()      # Ожидает, пока блокировка станет доступной.
+<lock>.release()      # Снова делает блокировку доступной.
 ```
 
 #### Or:
 ```python
-with <lock>:                                   # Enters the block by calling acquire() and
-    ...                                        # exits it with release(), even on error.
+with <lock>:                                   # Входит в блок, вызывая acquire() и
+    ...                                        # завершает работу с помощью release(), даже в случае ошибки.
 ```
-
 ### Semaphore, Event, Barrier
 ```python
-<Semaphore> = Semaphore(value=1)               # Lock that can be acquired by 'value' threads.
-<Event>     = Event()                          # Method wait() blocks until set() is called.
-<Barrier>   = Barrier(n_times)                 # Wait() blocks until it's called n times.
+<Semaphore> = Semaphore(value=1)            # Блокировка, которую могут получить потоки 'value'.
+<Event> = Event()                           # Метод wait() блокирует, пока не будет вызван set().
+<Barrier> = Barrier(n_times)                # Wait() блокирует, пока не будет вызван n раз.
 ```
 
 ### Queue
 ```python
-<Queue> = queue.Queue(maxsize=0)               # A thread-safe first-in-first-out queue.
-<Queue>.put(<el>)                              # Blocks until queue stops being full.
-<Queue>.put_nowait(<el>)                       # Raises queue.Full exception if full.
-<el> = <Queue>.get()                           # Blocks until queue stops being empty.
-<el> = <Queue>.get_nowait()                    # Raises queue.Empty exception if empty.
+<Queue> = queue.Queue(maxsize=0)          # Потокобезопасная очередь типа «первым пришел — первым вышел».
+<Queue>.put(<el>)                         # Блокирует, пока очередь не перестанет быть полной.
+<Queue>.put_nowait(<el>)                  # Вызывает исключение queue.Full, если она заполнена.
+<el> = <Queue>.get()                      # Блокирует, пока очередь не перестанет быть пустой.
+<el> = <Queue>.get_nowait()               # Вызывает исключение queue.Empty, если она пуста.
 ```
 
 ### Thread Pool Executor
 ```python
-<Exec> = ThreadPoolExecutor(max_workers=None)  # Or: `with ThreadPoolExecutor() as <name>: ...`
-<iter> = <Exec>.map(<func>, <args_1>, ...)     # Multithreaded and non-lazy map(). Keeps order.
-<Futr> = <Exec>.submit(<func>, <arg_1>, ...)   # Creates a thread and returns its Future obj.
-<Exec>.shutdown()                              # Waits for all submitted threads to finish.
+<Exec> = ThreadPoolExecutor(max_workers=None)    # Или: `with ThreadPoolExecutor() as <name>: ...`
+<iter> = <Exec>.map(<func>, <args_1>, ...)       # Многопоточный и неленивый map(). Сохраняет порядок.
+<Futr> = <Exec>.submit(<func>, <arg_1>, ...)     # Создает поток и возвращает его объект Future.
+<Exec>.shutdown()                                # Ожидает завершения всех отправленных потоков.
 ```
 
 ```python
-<bool> = <Future>.done()                       # Checks if the thread has finished executing.
-<obj>  = <Future>.result(timeout=None)         # Waits for thread to finish and returns result.
-<bool> = <Future>.cancel()                     # Cancels or returns False if running/finished.
-<iter> = as_completed(<coll_of_Futures>)       # `next(<iter>)` returns next completed Future.
+<bool> = <Future>.done()                   # Проверяет, завершил ли поток выполнение.
+<obj> = <Future>.result(timeout=None)      # Ожидает завершения потока и возвращает результат.
+<bool> = <Future>.cancel()                 # Отменяет или возвращает False, если выполняется/завершен.
+<iter> = as_completed(<coll_of_Futures>)   # `next(<iter>)` возвращает следующий завершенный Future.
 ```
-* **Map() and as\_completed() also accept 'timeout'. It causes futures.TimeoutError when next() is called/blocking. Map() times from original call and as_completed() from first call to next(). As\_completed() fails if next() is called too late, even if all threads are done.**
-* **Exceptions that happen inside threads are raised when map iterator's next() or Future's result() are called. Future's exception() method returns exception object or None.**
-* **ProcessPoolExecutor provides true parallelism but: everything sent to/from workers must be [pickable](#pickle), queues must be sent using executor's 'initargs' and 'initializer' parameters, and executor should only be reachable via `'if __name__ == "__main__": ...'`.**
-
-
 Coroutines
 ----------
 * **Coroutines have a lot in common with threads, but unlike threads, they only give up control when they call another coroutine and they don’t use as much memory.**
