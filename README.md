@@ -1,14 +1,3 @@
-Contents
---------
-**&nbsp;&nbsp;&nbsp;** **1. Collections:** **&nbsp;** **[`List`](#list)**__,__ **[`Dictionary`](#dictionary)**__,__ **[`Set`](#set)**__,__ **[`Tuple`](#tuple)**__,__ **[`Range`](#range)**__,__ **[`Enumerate`](#enumerate)**__,__ **[`Iterator`](#iterator)**__,__ **[`Generator`](#generator)**__.__  
-**&nbsp;&nbsp;&nbsp;** **2. Types:** **&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**  **[`Type`](#type)**__,__ **[`String`](#string)**__,__ **[`Regular_Exp`](#regex)**__,__ **[`Format`](#format)**__,__ **[`Numbers`](#numbers-1)**__,__ **[`Combinatorics`](#combinatorics)**__,__ **[`Datetime`](#datetime)**__.__  
-**&nbsp;&nbsp;&nbsp;** **3. Syntax:** **&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**  **[`Function`](#function)**__,__ **[`Inline`](#inline)**__,__ **[`Import`](#imports)**__,__ **[`Decorator`](#decorator)**__,__ **[`Class`](#class)**__,__ **[`Duck_Type`](#duck-types)**__,__ **[`Enum`](#enum)**__,__ **[`Except`](#exceptions)**__.__  
-**&nbsp;&nbsp;&nbsp;** **4. System:** **&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**  **[`Exit`](#exit)**__,__ **[`Print`](#print)**__,__ **[`Input`](#input)**__,__ **[`Command_Line_Arguments`](#command-line-arguments)**__,__ **[`Open`](#open)**__,__ **[`Path`](#paths)**__,__ **[`OS_Commands`](#os-commands)**__.__  
-**&nbsp;&nbsp;&nbsp;** **5. Data:** **&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**  **[`JSON`](#json)**__,__ **[`Pickle`](#pickle)**__,__ **[`CSV`](#csv)**__,__ **[`SQLite`](#sqlite)**__,__ **[`Bytes`](#bytes)**__,__ **[`Struct`](#struct)**__,__ **[`Array`](#array)**__,__ **[`Memory_View`](#memory-view)**__,__ **[`Deque`](#deque)**__.__  
-**&nbsp;&nbsp;&nbsp;** **6. Advanced:** **&nbsp;&nbsp;&nbsp;**  **[`Operator`](#operator)**__,__ **[`Match_Stmt`](#match-statement)**__,__ **[`Logging`](#logging)**__,__ **[`Introspection`](#introspection)**__,__ **[`Threading`](#threading)**__,__ **[`Coroutines`](#coroutines)**__.__  
-**&nbsp;&nbsp;&nbsp;** **7. Libraries:** **&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**  **[`Progress_Bar`](#progress-bar)**__,__ **[`Plot`](#plot)**__,__ **[`Table`](#table)**__,__ **[`Console_App`](#console-app)**__,__ **[`GUI`](#gui-app)**__,__ **[`Scraping`](#scraping)**__,__ **[`Web`](#web-app)**__,__ **[`Profile`](#profiling)**__.__  
-**&nbsp;&nbsp;&nbsp;** **8. Multimedia:** **&nbsp;&nbsp;**  **[`NumPy`](#numpy)**__,__ **[`Image`](#image)**__,__ **[`Animation`](#animation)**__,__ **[`Audio`](#audio)**__,__ **[`Synthesizer`](#synthesizer)**__,__ **[`Pygame`](#pygame)**__,__ **[`Pandas`](#pandas)**__,__ **[`Plotly`](#plotly)**__.__
-
 Основные встроенные типы данных
 ```python
 int — целые числа (без ограничения размера, например, 42, -10).
@@ -40,11 +29,10 @@ if __name__ == '__main__':      # Пропускает следующую стр
     main()                      # Runs `def main(): ...` function.
 ```
 
-
 List
 ----
 ```python
-<list> = [<el_1>, <el_2>, ...]  # Создает объект списка. Также list(<collection>).
+l = [1, 2, 3, ...]  # Создает объект списка. Также list(<collection>).
 ```
 
 ```python
@@ -127,7 +115,6 @@ value = <dict>.pop(key)                         # Удаляет элемент 
 [('blue', 3), ('red', 2), ('yellow', 1)]
 ```
 
-
 Set
 ---
 ```python
@@ -160,7 +147,6 @@ Set
 <frozenset> = frozenset(<collection>)
 ```
 
-
 Tuple
 -----
 ```python
@@ -174,15 +160,14 @@ Tuple
 Экономит память, так как работает, как обычный tuple.
 Упрощает работу с данными, которые имеют фиксированную структуру.
 ```python
->>> from collections import namedtuple
->>> Point = namedtuple('Point', 'x y')
->>> p = Point(1, y=2)
->>> print(p)
+from collections import namedtuple
+Point = namedtuple('Point', 'x y')
+p = Point(1, y=2)
+print(p)
 Point(x=1, y=2)
->>> p[0], p.x
+print(p[0], p.x)
 (1, 1)
 ```
-
 
 Range
 -----
@@ -196,31 +181,43 @@ Range
 >>> [i for i in range(3)]
 [0, 1, 2]
 ```
-
-
 Enumerate
 ---------
 ```python
 for i, el in enumerate(<coll>, start=0):   # Returns next element and its index on each pass.
     ...
 ```
-
-
 Iterator
 --------
-
 ```python
 <iter> = iter(<collection>)                # `iter(<iter>)` возвращает немодифицированный итератор.
 <iter> = iter(<function>, to_exclusive)    # Последовательность возвращаемых значений до «to_exclusive».
 <el>   = next(<iter> [, default])          # Вызывает StopIteration или возвращает «default» в конце.
 <list> = list(<iter>)                      # Возвращает список оставшихся элементов итератора.
 ```
-
+```python
+arr = [1, 2, 3]
+class Iter:
+    def __init__(self, arr: list):
+        self.arr = arr
+        self.index = 0
+    def __iter__(self):
+        return self
+    def __next__(self):
+        if self.index<len(self.arr):
+            item = self.arr[self.index]
+            self.index += 1
+            return item
+        else:
+            raise StopIteration
+obj = Iter(arr)
+for i in obj:
+    print(i)
+```
 ### Itertools
 ```python
 import itertools as it
 ```
-
 ```python
 <iter> = it.count(start=0, step=1)         # Возвращает обновленное значение бесконечно. Принимает числа с плавающей точкой.
 <iter> = it.repeat(<el> [, times])         # Возвращает элемент бесконечно или указанное количество раз.
@@ -237,7 +234,6 @@ import itertools as it
 <iter> = it.islice(<coll>, from_inc, …)    # `to_exclusive, +step_size`. Индексы могут быть None.
 ```
 
-
 Generator
 ---------
 
@@ -253,7 +249,6 @@ def count(start, step):
 >>> next(counter), next(counter), next(counter)
 (10, 12, 14)
 ```
-
 
 Type
 ----
@@ -308,11 +303,8 @@ True
 | decimal.Decimal    |   yes    |          |          |          |          |
 +--------------------+----------+----------+----------+----------+----------+
 ```
-
-
 String
 ------
-
 ```python
 <str>  = <str>.strip()                       # Удаляет все пробельные символы с обоих концов.
 <str>  = <str>.strip('<chars>')              # Удаляет переданные символы. Также lstrip/rstrip().
@@ -352,7 +344,6 @@ String
 <bool> = <str>.isprintable()                 # Checks for [ !#$%…] and isalnum().
 <bool> = <str>.isspace()                     # Checks for [ \t\n\r\f\v\x1c-\x1f\x85\xa0…].
 ```
-
 
 Regex
 -----
@@ -472,8 +463,6 @@ Format
 {90:b}                           # '1011010'. Двоичное представление целого числа.
 {90:X}                           # '5A'. Шестнадцатеричное с заглавными буквами.
 ```
-
-
 Numbers
 -------
 ```python
@@ -536,8 +525,6 @@ shuffle(<list>)                           # Перемешивает списо�
 <int> = <int> << n_bits                      # Left shift. Use >> for right.
 <int> = ~<int>                               # Not. Also -<int> - 1.
 ```
-
-
 Combinatorics
 -------------
 ```python
@@ -564,7 +551,6 @@ import itertools as it
  ('b', 'c')                                  # b .  .  x
 ]                                            # c .  .  .
 ```
-
 
 Datetime
 --------
@@ -634,7 +620,6 @@ import zoneinfo, dateutil.tz
 <float> = <TD> / <TD>                                     # Также `(<int>, <TD>) = divmod(<TD>, <TD>)`.
 ```
 
-
 Function
 --------
 ```python
@@ -650,7 +635,6 @@ def <func_name>(<nondefault_args>, <default_args>): ...  # E.g. `def func(x, y=0
 <obj> = <function>(<keyword_args>)                       # E.g. `func(x=0, y=0)`.
 <obj> = <function>(<positional_args>, <keyword_args>)    # E.g. `func(0, y=0)`.
 ```
-
 
 Splat Operator
 --------------
@@ -698,7 +682,6 @@ def add(*a):
 head, *body, tail = <collection> # Head или tail можно опустить.
 ```
 
-
 Inline
 ------
 ### Lambda
@@ -733,7 +716,16 @@ from functools import reduce
 ### Any, All
 ```python
 <bool> = any(<collection>)                   # Является ли `bool(<el>)` ​​Истиной для любого el?
+values = [0, False, None, '', 5]  
+print(any(values))  # True (потому что 5 является Истиной)
+
 <bool> = all(<collection>)                   # Истина для всех? Также Истина, если пусто.
+values = [1, True, 'hello']  
+print(all(values))  # True (все элементы Истинны)
+values = [1, False, 'hello']  
+print(all(values))  # False (так как `False` присутствует)
+empty_list = []  
+print(all(empty_list))  # True (пустая коллекция считается полностью Истинной)
 ```
 
 ### Conditional Expression
@@ -811,7 +803,39 @@ from functools import partial
 >>> multiply_by_3(10)
 30
 ```
+### Timeit — измерение времени выполнения небольшого блока кода
+```python
+import timeit
+from functools import partial
 
+def recur(n):
+    if n == 0:
+        return 1
+    else:
+        return n * recur(n - 1)
+
+def fork(n):
+    total = 1
+    for i in range(1, n + 1):
+        total *= i
+    return total
+
+# Фиксируем аргумент для функций
+r1 = timeit.timeit(partial(recur, 900), number=1000)
+r2 = timeit.timeit(partial(fork, 900), number=1000)
+
+print("%.5f" % r1)
+print("%.5f" % r2)
+```
+### cProfile — детальное профилирование функций
+```python
+import cProfile
+
+def test_function():
+    x = [i**2 for i in range(10000)]
+
+cProfile.run('test_function()')
+```
 ### Non-Local
 
 ```python
@@ -830,33 +854,81 @@ def get_counter():
 (1, 2, 3)
 ```
 
-
 Decorator
 ---------
 ```python
+def decorator(param):
+    def wrapper(func):
+        def inner(*args):
+            return func(*args) * param
+        return inner
+    return wrapper
+
 @decorator_name
 def function_that_gets_passed_to_decorator():
     ...
 ```
-
+Декоратор из класса – реализовать __call__():
+```python
+class Decorator:
+    def __call__(self, func):
+        def wrapper(*args):
+            return func(*args)
+        return wrapper
+Вызов декоратора без @ – decorated_function = decorator(original_function).
+```
+Фабрика декораторов. Функция, возвращающая декоратор, например для управления правами
+```python
+def decorator_factory(prefix):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            print(f"{prefix} Вызов функции {func.__name__}")
+            return func(*args, **kwargs)
+        return wrapper
+    return decorator
+@decorator_factory("LOG:")
+def say_hello(name):
+    print(f"Привет, {name}!")
+say_hello("Алекс")
+```
 ### Debugger Example
 
 ```python
 from functools import wraps
 
-def debug(func):
-    @wraps(func)
-    def out(*args, **kwargs):
-        print(func.__name__)
+def my_decorator(func):
+    def wrapper(*args, **kwargs):
+        print("До вызова функции")
         return func(*args, **kwargs)
-    return out
+    return wrapper
 
-@debug
-def add(x, y):
-    return x + y
+@my_decorator
+def greet():
+    """Функция приветствия"""
+    print("Привет, мир!")
+
+print(greet.__name__)  # Выведет: wrapper (а должен быть greet)
+print(greet.__doc__)   # Выведет: None (документация потерялась)
+
+Исправленный вариант с wraps:
+python
+def my_decorator(func):
+    @wraps(func)  # Сохраняем оригинальные метаданные
+    def wrapper(*args, **kwargs):
+        print("До вызова функции")
+        return func(*args, **kwargs)
+    return wrapper
+
+@my_decorator
+def greet():
+    """Функция приветствия"""
+    print("Привет, мир!")
+
+print(greet.__name__)  # Выведет: greet
+print(greet.__doc__)   # Выведет: Функция приветствия
 ```
 
-### Cache
+### Cache, lru_cache
 
 ```python
 from functools import cache, lru_cache
@@ -1019,8 +1091,6 @@ from copy import copy, deepcopy
 
 Duck Types
 ----------
-**A duck type is an implicit type that prescribes a set of special methods. Any object that has those methods defined is considered a member of that duck type.**
-
 ### Comparable
 
 ```python
@@ -1070,7 +1140,7 @@ class MySortable:
 ```
 
 ### Iterator
-
+```python
 class Counter:
     def __init__(self):
         self.i = 0
@@ -1363,9 +1433,9 @@ Exit
 ----
 ```python
 import sys
-sys.exit()                        # Exits with exit code 0 (success).
-sys.exit(<int>)                   # Exits with the passed exit code.
-sys.exit(<obj>)                   # Prints to stderr and exits with 1.
+sys.exit()      # Выход с кодом выхода 0 (успешно).
+sys.exit(<int>) # Выход с переданным кодом выхода.
+sys.exit(<obj>) # Выводит на stderr и выход с 1.
 ```
 
 
@@ -1665,10 +1735,6 @@ import csv
 <list>   = next(<reader>)           # Returns next row as a list of strings.
 <list>   = list(<reader>)           # Returns a list of remaining rows.
 ```
-* **File must be opened with a `'newline=""'` argument, or all '\r\n' sequences inside quoted fields will get converted to '\n'!**
-* **To print the spreadsheet to the console use [Tabulate](#table) library.**
-* **For XML and binary Excel files (xlsx, xlsm and xlsb) use [Pandas](#dataframe-plot-encode-decode) library.**
-* **Reader accepts any collection of strings, not just files.**
 
 ### Write
 ```python
@@ -1676,18 +1742,6 @@ import csv
 <writer>.writerow(<collection>)     # Encodes objects using `str(<el>)`.
 <writer>.writerows(<coll_of_coll>)  # Appends multiple rows.
 ```
-* **File must be opened with a `'newline=""'` argument, or '\r' will be added in front of every '\n' on platforms that use '\r\n' line endings!**
-* **Open existing file with `'mode="a"'` to append to it or `'mode="w"'` to overwrite it.**
-
-### Parameters
-* **`'dialect'` - Master parameter that sets the default values. String or a 'csv.Dialect' object.**
-* **`'delimiter'` - A one-character string used to separate fields.**
-* **`'lineterminator'` - How writer terminates rows. Reader looks for '\n', '\r' and '\r\n'.**
-* **`'quotechar'` - Character for quoting fields containing delimiters, quotechars, '\n' or '\r'.**
-* **`'escapechar'` - Character for escaping quotechars.**
-* **`'doublequote'` - Whether quotechars inside fields are/get doubled or escaped.**
-* **`'quoting'` - 0: As necessary, 1: All, 2: All but numbers which are read as floats, 3: None.**
-* **`'skipinitialspace'` - Is space character at the start of the field stripped by the reader.**
 
 ### Dialects
 ```text
@@ -1722,8 +1776,6 @@ def write_to_csv_file(filename, rows, mode='w', **csv_params):
 
 SQLite
 ------
-**A server-less database engine that stores each database into its own file.**
-
 ```python
 import sqlite3
 <conn> = sqlite3.connect(<path>)               # Opens existing or new file. Also ':memory:'.
@@ -1756,7 +1808,6 @@ with <conn>:                                   # Exits the block with commit() o
 <conn>.execute('<query>', <dict/namedtuple>)   # Replaces every :<key> with value.
 <conn>.executemany('<query>', <coll_of_coll>)  # Runs execute() multiple times.
 ```
-* **Passed values can be of type str, int, float, bytes, None, or bool (stored as 1 or 0).**
 
 ### Example
 **Values are not actually saved in this example because `'conn.commit()'` is omitted!**
@@ -1836,15 +1887,35 @@ def write_bytes(filename, bytes_obj):
 
 Struct
 ------
-* **Module that performs conversions between a sequence of numbers and a bytes object.**
-* **System’s type sizes, byte order, and alignment rules are used by default.**
 
 ```python
 from struct import pack, unpack
 
-<bytes> = pack('<format>', <num_1> [, ...])  # Packs numbers according to format string.
-<tuple> = unpack('<format>', <bytes>)        # Use iter_unpack() to get iterator of tuples.
+# Запакуем данные в формат: int, float, 5-символьную строку
+binary_data = pack('if5s', 100, 3.14, b'world')
+
+# Распакуем обратно
+original_values = unpack('if5s', binary_data)
+print(original_values)  # (100, 3.14, b'world')
 ```
+Числовые типы
+Формат	               Описание	                          Размер (байт)
+c	               Один символ	                                1
+b	             signed char (целое, -128 до 127)           	1
+B	             unsigned char (целое, 0 до 255)	            1
+?	             bool (логическое значение)	                    1
+h	             short (signed, -32,768 до 32,767)	            2
+H	             unsigned short (0 до 65,535)	                2
+i	             int (signed, -2,147,483,648 до 2,147,483,647)	4
+I	             unsigned int (0 до 4,294,967,295)	            4
+q	             long long (signed)                         	8
+Q	             unsigned long long                         	8
+f	             float (число с плавающей точкой)	            4
+d	             double (число с плавающей точкой)	            8
+Другие форматы
+s — строка, например 5s означает 5 символов (b'hello').
+p — строка переменной длины с префиксом длины (например, pack('10p', b'hello')).
+x — байт-заполнитель (пропускает байт).
 
 ```python
 >>> pack('>hhl', 1, 2, 3)
@@ -1853,41 +1924,32 @@ b'\x00\x01\x00\x02\x00\x00\x00\x03'
 (1, 2, 3)
 ```
 
-### Format
-#### For standard type sizes and manual alignment (padding) start format string with:
-* **`'='` - System's byte order (usually little-endian).**
-* **`'<'` - Little-endian (i.e. least significant byte first).**
-* **`'>'` - Big-endian (also `'!'`).**
-
-#### Besides numbers, pack() and unpack() also support bytes objects as a part of the sequence:
-* **`'c'` - A bytes object with a single element. For pad byte use `'x'`.**
-* **`'<n>s'` - A bytes object with n elements (not effected by byte order).**
-
-#### Integer types. Use a capital letter for unsigned type. Minimum and standard sizes are in brackets:
-* **`'b'` - char (1/1)**
-* **`'h'` - short (2/2)**
-* **`'i'` - int (2/4)**
-* **`'l'` - long (4/4)**
-* **`'q'` - long long (8/8)**
-
-#### Floating point types (struct always uses standard sizes):
-* **`'f'` - float (4/4)**
-* **`'d'` - double (8/8)**
-
-
 Array
 -----
-**List that can only hold numbers of a predefined type. Available types and their minimum sizes in bytes are listed above. Type sizes and byte order are always determined by the system, however bytes of each element can be reversed with byteswap() method.**
 
 ```python
 from array import array
 ```
-
+Использует меньше памяти, чем список (list).
+Позволяет работать с большими массивами чисел.
+Поддерживает методы, похожие на список (append, remove, pop и др.).
 ```python
-<array> = array('<typecode>', <coll_of_nums>)  # Creates array from collection of numbers.
-<array> = array('<typecode>', <bytes>)         # Writes passed bytes to array's memory.
-<array> = array('<typecode>', <array>)         # Treats passed array as a sequence of numbers.
-<array>.fromfile(<file>, n_items)              # Appends file's contents to array's memory.
+from array import array
+# Создаем массив целых чисел ('i' означает int)
+arr = array('i', [1, 2, 3, 4, 5])
+# Выводим элементы
+print(arr)  # array('i', [1, 2, 3, 4, 5])
+# Добавляем элемент
+arr.append(6)
+print(arr)  # array('i', [1, 2, 3, 4, 5, 6])
+# Доступ к элементам
+print(arr[2])  # 3
+# Изменяем значение
+arr[2] = 10
+print(arr)  # array('i', [1, 2, 10, 4, 5, 6])
+# Удаляем элемент
+arr.remove(4)
+print(arr)  # array('i', [1, 2, 10, 5, 6])
 ```
 
 ```python
